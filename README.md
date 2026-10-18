@@ -122,7 +122,7 @@ The Little Postcard 就是这个地方：用「图片相似 + 文字情绪」把
 ### 1. 克隆并安装
 
 ```bash
-git clone https://github.com/<your-account>/the-little-postcard.git
+git clone https://github.com/Mercator4869/the-little-postcard.git
 cd the-little-postcard
 
 python -m venv .venv
