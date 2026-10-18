@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}寄一张明信片 · The Little Postcard{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h1>把此刻的照片，交给明信片的星空</h1>
+  <p class="lead">
+    上传一张照片，写下此刻的心情。星空会从许多前人留下的明信片里，
+    替你找到一张画面相近、情绪也相近的回信。
+  </p>
+  <p class="lead">
+    读完以后，你可以把这张明信片继续留在星空，交给下一个抬头的人。
+  </p>
+
+  {#- 上传表单本身就是一张明信片：正面放照片，反面写署名与留言。
+      翻面（以及翻面时的残影/星光）复用 static/js/postcard.js，
+      这里用 data-postcard-flip="manual" 表示「由按钮翻」而不是点卡片翻，
+      免得点输入框时被误翻。 -#}
+  <form class="upload-form postcard-form" method="post" action="{{ url_for('upload') }}"
+        enctype="multipart/form-data" data-postcard-form novalidate>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <div class="postcard-stage postcard-stage--compose" data-postcard
+         data-postcard-flip="manual">
+      <div class="postcard">
+        <div class="postcard__inner">
+          <span class="postcard__corner" data-corner="tl" aria-hidden="true"></span>
+          <span class="postcard__corner" data-corner="tr" aria-hidden="true"></span>
+          <span class="postcard__corner" data-corner="br" aria-hidden="true"></span>
+          <span class="postcard__corner" data-corner="bl" aria-hidden="true"></span>
+
+          <div class="postcard__face postcard__face--front">
+            <label class="pc-compose" for="image">
+              <img class="pc-compose__img" data-photo-preview alt="你选择的照片" hidden>
+              <span class="pc-compose__empty" data-photo-empty>
+                <span class="pc-compose__plus" aria-hidden="true">＋</span>
+                <span class="pc-compose__text">放一张此刻的照片</span>
+                <span class="pc-compose__tip">
+                  {{ allowed_formats }} · 最大 {{ '%.0f'|format(max_upload_mib) }} MiB
+                </span>
+              </span>
+              <span class="pc-compose__change" data-photo-change hidden>轻触换一张照片</span>
+              <input class="pc-file-input" type="file" id="image" name="image"
+                     accept="image/jpeg,image/png" required>
+            </label>
+
+            <button type="button" class="pc-next" data-postcard-toggle>
+              翻到背面，写一句话 →
+            </button>
+          </div>
+
+          <div class="postcard__face postcard__face--back">
+            <div class="pc-back pc-back--compose">
+              <div class="pc-back__left">
+                <label class="pc-field-label" for="message">留一句话</label>
+                <textarea class="pc-field pc-field--area" id="message" name="message"
+                          rows="5" maxlength="{{ query_text_max_length }}"
+                          placeholder="{{ compose_placeholder }}"></textarea>
+              </div>
+
+              <span class="pc-back__divider" aria-hidden="true"></span>
+
+              <div class="pc-back__right pc-back__right--compose">
+                <span class="pc-back__stamp" aria-hidden="true">♪</span>
+                <label class="pc-field-label" for="nickname">署名</label>
+                <input class="pc-field" type="text" id="nickname" name="nickname"
+                       maxlength="{{ nickname_max_length }}"
+                       placeholder="可留空">
+                <button type="submit" class="btn btn-primary pc-send">寄往星空</button>
+                <button type="button" class="pc-back-link" data-postcard-toggle>
+                  ← 翻回正面
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <canvas class="postcard-fx" data-postcard-canvas aria-hidden="true"></canvas>
+    </div>
+
+    <p class="postcard-hint" data-postcard-hint>
+      轻触正面放一张照片，翻到背面写一句话，再寄往星空
+    </p>
+  </form>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/postcard.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/compose.js') }}" defer></script>
+{% endblock %}

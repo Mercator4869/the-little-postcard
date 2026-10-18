@@ -1,0 +1,15 @@
+# 把 your-domain.example 换成你的域名；
+# 密码哈希用 `caddy hash-password --plaintext '你的密码'` 生成。
+your-domain.example {
+    encode gzip
+
+    basic_auth {
+        admin $2a$14$REPLACE_WITH_CADDY_HASH
+    }
+
+    request_body {
+        max_size 12MB
+    }
+
+    reverse_proxy 127.0.0.1:8000
+}

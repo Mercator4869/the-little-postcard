@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}进入星空 · The Little Postcard{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h1>进入这片星空</h1>
+  <p class="lead">这里只对拿到访问密码的人开放。</p>
+
+  {% if error %}
+    <div class="flash flash-error">{{ error }}</div>
+  {% endif %}
+
+  <form method="post" action="{{ url_for('access_login') }}" class="post-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="next" value="{{ next }}">
+
+    <label for="password">访问密码</label>
+    <input type="password" id="password" name="password"
+           autocomplete="current-password" required autofocus>
+
+    <button type="submit" class="btn btn-primary">进入</button>
+  </form>
+</section>
+{% endblock %}

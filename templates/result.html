@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+{% block title %}星空的回信 · The Little Postcard{% endblock %}
+
+{% block head_extra %}
+<script>
+  (function () {
+    try {
+      if (sessionStorage.getItem("lpLoaderPending") === "1") {
+        document.documentElement.classList.add("lp-loader-pending");
+        // 如果加载脚本异常，至少不要让页面一直停留在遮挡层上。
+        window.setTimeout(function () {
+          document.documentElement.classList.remove("lp-loader-pending");
+          document.body.classList.remove("lp-loader-open");
+          var overlay = document.getElementById("lpLoader");
+          if (overlay) {
+            overlay.classList.remove("lp-is-visible");
+            overlay.classList.add("lp-loader--lp-hidden");
+            overlay.setAttribute("aria-hidden", "true");
+          }
+          if (window.DSHLittlePrinceLoader) {
+            try { window.DSHLittlePrinceLoader.hide(); } catch (error) {}
+          }
+          try { sessionStorage.removeItem("lpLoaderPending"); } catch (error) {}
+        }, 6000);
+      }
+    } catch (error) {}
+  }());
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="card result-card">
+  {#- 标题不再占左上角，改成右上角的一枚竖排手写签，带一个小印章。 -#}
+  <div class="result-head">
+    <h1 class="result-title">星空的回信</h1>
+    <span class="result-seal" aria-hidden="true">歌</span>
+  </div>
+
+  {% if query_message %}
+    <p class="hint small">你寄出时写下的这句话：{{ query_message }}</p>
+  {% endif %}
+
+  {% if degraded %}
+    <div class="notice notice-warn">
+      <strong>今晚的星星暂时被云遮住了，先为你留下一首默认歌曲。</strong>
+      {% if degrade_reason %}<p class="small">原因：{{ degrade_reason }}</p>{% endif %}
+    </div>
+  {% endif %}
+
+  {#- 明信片：正面是命中的笔记配图，反面是这张图的笔记。
+      卡片长宽比跟随图片本身；翻面由 CSS 3D 完成，
+      手绘残影与星光粒子叠在 static/js/postcard.js 的 Canvas 上。 -#}
+  <div class="postcard-stage" data-postcard>
+    <div class="postcard" role="button" tabindex="0" aria-pressed="false"
+         style="--pc-ar: {{ card_aspect }}"
+         aria-label="一张来自星空的明信片，按回车或轻触翻面">
+      <div class="postcard__inner">
+        {#- 四个角落标记只用于取景：脚本读取它们的投影位置，
+            从而让 Canvas 线条精确贴合翻转中的卡片轮廓。 -#}
+        <span class="postcard__corner" data-corner="tl" aria-hidden="true"></span>
+        <span class="postcard__corner" data-corner="tr" aria-hidden="true"></span>
+        <span class="postcard__corner" data-corner="br" aria-hidden="true"></span>
+        <span class="postcard__corner" data-corner="bl" aria-hidden="true"></span>
+
+        <div class="postcard__face postcard__face--front">
+          <figure class="pc-front">
+            {% if matched_image_path %}
+              <img src="{{ url_for('static', filename=matched_image_path) }}"
+                   alt="前人留下的明信片配图"
+                   data-fallback-src="{{ url_for('static', filename=upload_image_path) }}"
+                   loading="eager" decoding="async">
+            {% else %}
+              <img src="{{ url_for('static', filename=upload_image_path) }}"
+                   alt="你寄出的照片">
+              <figcaption class="pc-front__fallback">星星暂时被云遮住</figcaption>
+            {% endif %}
+          </figure>
+        </div>
+
+        <div class="postcard__face postcard__face--back">
+          <div class="pc-back">
+            <div class="pc-back__left">
+              {% if matched_note and matched_note['note_text'] %}
+                <blockquote class="pc-back__note"><span class="pc-back__note-body">{{ matched_note['note_text'] }}</span></blockquote>
+                <p class="pc-back__sign">
+                  — {{ matched_note['note_author'] or default_note_author }}
+                  {% if matched_note_time %}<span class="pc-back__date">{{ matched_note_time }}</span>{% endif %}
+                </p>
+              {% else %}
+                <div class="pc-back__empty">
+                  <span class="pc-back__empty-mark" aria-hidden="true">♪</span>
+                  <p class="pc-back__empty-text">
+                    星星暂时被云遮住了，<br>先把这首歌留给你。
+                  </p>
+                </div>
+              {% endif %}
+            </div>
+
+            <span class="pc-back__divider" aria-hidden="true"></span>
+
+            <div class="pc-back__right">
+              <span class="pc-back__stamp" aria-hidden="true">♪</span>
+              <p class="pc-back__label">这张明信片带来的歌</p>
+              <p class="pc-back__song">{{ song['song_name'] }}</p>
+              {% if song['artist'] %}<p class="pc-back__artist">{{ song['artist'] }}</p>{% endif %}
+              <span class="pc-back__lines" aria-hidden="true">
+                <i></i><i></i><i></i>
+              </span>
+              <span class="pc-back__mark" aria-hidden="true">POST CARD</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <canvas class="postcard-fx" data-postcard-canvas aria-hidden="true"></canvas>
+  </div>
+  <p class="postcard-hint">轻触明信片，解锁寄来的歌</p>
+
+  {% if used_text %}
+    <p class="hint small">星空在相近的画面里，也听见了你写下的这句话{% if used_emotion %}和其中的情绪{% endif %}。</p>
+  {% endif %}
+
+  {#- 翻面之前只留明信片：歌名、歌手、播放器、入口都在这一块里，
+      第一次翻到反面后才由 postcard.js 显示出来。 -#}
+  <div class="result-details" data-result-details hidden>
+    <div class="song-block">
+      <figure class="source-thumb">
+        <img src="{{ url_for('static', filename=upload_image_path) }}" alt="你上传的图片">
+        <figcaption>你寄出的照片</figcaption>
+      </figure>
+      <div class="song-meta">
+        <h2 class="song-name">{{ song['song_name'] }}</h2>
+        {% if song['artist'] %}<p class="artist">{{ song['artist'] }}</p>{% endif %}
+      </div>
+    </div>
+
+    <div class="audio-block">
+      {% if audio_available %}
+        {#- 不再自动播放：翻到明信片反面时才起播（见 postcard.js）。
+            手机浏览器常拦自动播放，所以再加一个显式播放按钮。 -#}
+        <button type="button" class="btn btn-primary play-song" data-play-song>
+          ▶ 播放这首歌
+        </button>
+        <audio id="player" controls preload="auto" playsinline webkit-playsinline
+               data-song-id="{{ song['id'] }}"
+               src="{{ url_for('static', filename=audio_relative) }}">
+          当前浏览器不支持音频播放。
+        </audio>
+        <p class="hint small" id="audio-hint" hidden>
+          浏览器阻止了自动播放，请点上面的「播放这首歌」按钮。
+        </p>
+      {% else %}
+        <p class="hint">该歌曲暂未配置本地音频。</p>
+      {% endif %}
+    </div>
+
+    <p class="actions">
+      <a class="link" href="{{ url_for('song_detail', song_id=song['id']) }}">走进这首歌的星群 →</a>
+      <a class="link" href="{{ url_for('index') }}">再寄一张 →</a>
+    </p>
+  </div>
+</section>
+
+<section class="card">
+  <h2>把此刻留在星空</h2>
+  <p class="hint">
+    你刚刚收到的，是前人留在星空里的一张明信片。如果你愿意，
+    也可以把自己的照片和这句话留下——让它成为下一张，被另一个人接住。
+  </p>
+
+  {% if post_used %}
+    <p class="hint">
+      你的明信片已经留在星空。
+      <a class="link" href="{{ url_for('posts') }}">去看看 →</a>
+    </p>
+  {% else %}
+    <form method="post" action="{{ url_for('submit_post') }}" class="post-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <input type="hidden" name="token" value="{{ token }}">
+
+      <label for="nickname">署名（可选）</label>
+      <input type="text" id="nickname" name="nickname" maxlength="30"
+             placeholder="{{ nickname_placeholder }}"
+             value="{{ draft.nickname if draft else query_nickname }}">
+
+      <label for="content">想留下的话</label>
+      <textarea id="content" name="content" rows="4" maxlength="500"
+                required
+                placeholder="{{ compose_placeholder }}">{{ draft.content if draft else query_message }}</textarea>
+
+      <button type="submit" class="btn btn-primary">留在星空</button>
+    </form>
+
+    <p class="hint result-skip">
+      也可以只带走这张回信，<a class="link" href="{{ url_for('index') }}">不留在这里 →</a>
+    </p>
+  {% endif %}
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/postcard.js') }}" defer></script>
+{% endblock %}

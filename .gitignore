@@ -1,0 +1,89 @@
+# ============================================================
+#  The Little Postcard · 明信片的星空
+#  .gitignore —— 严禁把密钥、环境配置、缓存、日志、本地素材提交上来
+# ============================================================
+
+# ---------------------------------------------------------------- 密钥 / 环境变量
+# 绝对不要提交：.env 中保存访问口令、开发者口令、Flask 密钥
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*credentials*
+*.secret_key
+.secret_key
+config.local.py
+
+# ---------------------------------------------------------------- 数据库与运行产物
+# 本地数据库含真实留言与图片路径，不入库（结构由 db.py 自动建）
+data/music.db
+data/music.db-*
+data/*.db
+data/*.db.*
+data/*.bak*
+data/_backup_*
+data/.secret_key
+data/logs/
+data/model_cache/
+data/dedupe_removed_*.json
+*.sqlite
+*.sqlite3
+
+# ---------------------------------------------------------------- 本地素材（体积大）
+# 素材按 README「素材与权限说明」在本地准备，不进仓库：
+#   data/source_images/  原始图片
+#   static/comment_images/  预处理生成的素材图
+#   static/audio/        本地音频
+#   static/uploads/      用户上传
+data/source_images/
+static/comment_images/
+static/audio/
+static/uploads/
+!data/source_images/.gitkeep
+!static/comment_images/.gitkeep
+!static/audio/.gitkeep
+!static/uploads/.gitkeep
+
+# ---------------------------------------------------------------- 缓存 / 临时文件
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.cache/
+.coverage
+.coverage.*
+htmlcov/
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+env/
+.tmp/
+tmp/
+pytest-of-*/
+pytest-*/
+
+# ---------------------------------------------------------------- 日志
+*.log
+*.log.*
+logs/
+
+# ---------------------------------------------------------------- 部署与隧道（含主机路径 / tunnel id）
+deploy/cloudflared.yml
+*.trycloudflare.com
+
+# ---------------------------------------------------------------- 编辑器 / 系统
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+desktop.ini

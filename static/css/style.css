@@ -1,0 +1,1372 @@
+﻿/* 图片匹配音乐 Demo — 本地样式
+   不加载任何 CDN 字体、脚本或样式（计划书 §3.3）。 */
+
+:root {
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --border: #e2e5ea;
+  --text: #1f2329;
+  --text-muted: #6b7280;
+  --accent: #2f6fed;
+  --accent-hover: #2559c4;
+  --warn-bg: #fff7e6;
+  --warn-border: #f0c36d;
+  --warn-text: #8a5a00;
+  --error-bg: #fdecec;
+  --error-border: #e8a0a0;
+  --error-text: #a02020;
+  --success-bg: #eaf7ee;
+  --success-border: #9fd3ae;
+  --success-text: #1f6b39;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei",
+               "PingFang SC", "Hiragino Sans GB", sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ------------------------------------------------------------ header */
+.site-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+
+.brand {
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.nav a {
+  margin-left: 18px;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.nav a:hover { color: var(--accent); }
+
+/* -------------------------------------------------------------- main */
+main { padding: 28px 0 48px; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px 26px;
+  margin-bottom: 20px;
+}
+
+.card.muted { background: #fbfcfd; }
+
+h1 { font-size: 22px; margin: 0 0 12px; }
+h2 { font-size: 17px; margin: 0 0 12px; }
+
+.lead { color: var(--text-muted); margin-top: 0; }
+.hint { color: var(--text-muted); font-size: 13px; }
+.small { font-size: 13px; }
+
+/* ----------------------------------------------------------- flashes */
+.flashes { margin-bottom: 18px; }
+
+.flash {
+  padding: 11px 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border: 1px solid transparent;
+}
+
+.flash-error   { background: var(--error-bg);   border-color: var(--error-border);   color: var(--error-text); }
+.flash-success { background: var(--success-bg); border-color: var(--success-border); color: var(--success-text); }
+.flash-message { background: var(--warn-bg);    border-color: var(--warn-border);    color: var(--warn-text); }
+
+.notice {
+  padding: 13px 16px;
+  border-radius: 8px;
+  margin-bottom: 18px;
+}
+
+.notice-warn {
+  background: var(--warn-bg);
+  border: 1px solid var(--warn-border);
+  color: var(--warn-text);
+}
+
+/* ------------------------------------------------------------ forms */
+.upload-form,
+.post-form {
+  margin: 6px 0 0;
+}
+
+/* 文件选择框与"选择图片"标签贴合展示 */
+.file-label {
+  display: inline-block;
+  font-weight: 500;
+  margin: 14px 0 6px;
+}
+
+label {
+  display: block;
+  font-weight: 500;
+  margin: 14px 0 6px;
+}
+
+input[type="text"],
+textarea,
+input[type="file"] {
+  width: 100%;
+  padding: 9px 11px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  font: inherit;
+  background: #fff;
+  color: var(--text);
+}
+
+textarea { resize: vertical; }
+
+input[type="text"]:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 10px 22px;
+  border: none;
+  border-radius: 7px;
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn-primary:hover { background: var(--accent-hover); }
+
+/* ------------------------------------------------------------- match */
+.match-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 18px;
+  margin: 18px 0 22px;
+}
+
+.thumb {
+  margin: 0;
+  text-align: center;
+}
+
+.thumb img {
+  width: 100%;
+  max-height: 320px;
+  object-fit: contain;
+  background: #f0f1f3;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.thumb figcaption {
+  margin-top: 7px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.song-block { margin: 18px 0; }
+.song-name { margin: 0 0 4px; }
+.artist { color: var(--text-muted); margin: 0 0 6px; }
+.desc { margin: 0; }
+
+.audio-block { margin: 16px 0; }
+.audio-block audio { width: 100%; }
+
+.actions { margin-top: 18px; }
+
+.link {
+  color: var(--accent);
+  text-decoration: none;
+  margin-right: 16px;
+}
+
+.link:hover { text-decoration: underline; }
+
+/* ------------------------------------------------------------- posts */
+.post-list { list-style: none; margin: 0; padding: 0; }
+
+.post-item {
+  display: flex;
+  gap: 14px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.post-item:last-child { border-bottom: none; }
+
+.post-thumb {
+  width: 84px;
+  height: 84px;
+  object-fit: cover;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+  background: #f0f1f3;
+}
+
+.post-body { flex: 1; min-width: 0; }
+
+.post-meta {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  font-size: 13px;
+}
+
+.nickname { font-weight: 600; }
+.time { color: var(--text-muted); }
+.post-song { margin: 5px 0; font-size: 14px; }
+.post-content { margin: 5px 0 0; white-space: pre-wrap; word-break: break-word; }
+
+/* -------------------------------------------------------- pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 22px;
+}
+
+.page-info { color: var(--text-muted); font-size: 14px; }
+
+/* ------------------------------------------------------------ footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  padding: 18px 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.site-footer p { margin: 0; }
+
+.plain-list { margin: 0 0 12px; padding-left: 20px; }
+.plain-list li { margin-bottom: 5px; }
+
+/* ------------------------------------------------------ mode switch */
+.mode-group {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin: 0 0 16px;
+}
+
+.mode-group legend {
+  padding: 0 6px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.mode-option { display: block; margin: 4px 0; }
+.mode-option input[type="radio"] { margin-right: 6px; }
+
+/* ----------------------------------------------------- matched post */
+.post-hit {
+  border-left: 3px solid var(--border);
+  padding: 8px 14px;
+  margin: 14px 0;
+  background: var(--surface);
+}
+
+.post-meta {
+  margin: 0 0 6px;
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+
+/* --------------------------------------------------- song space grid */
+.note-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.note-card {
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.note-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.note-card figcaption {
+  padding: 8px 10px;
+  font-size: 13px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ------------------------------------------------------- note feed */
+.note-feed {
+  margin-top: 12px;
+}
+
+.note-actions {
+  margin: 8px 0 4px;
+}
+
+.like-btn {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.like-btn:hover {
+  border-color: #d9536a;
+  color: #d9536a;
+}
+
+.like-btn.liked {
+  border-color: #d9536a;
+  color: #d9536a;
+  cursor: pointer;
+}
+
+.note-replies {
+  border-left: 3px solid var(--border);
+  padding-left: 10px;
+  margin: 8px 0;
+}
+
+.note-reply {
+  margin: 4px 0;
+  font-size: 13px;
+}
+
+.note-reply .time {
+  margin-left: 6px;
+  font-size: 12px;
+}
+
+.reply-text {
+  display: block;
+  margin-top: 2px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.reply-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: start;
+  margin-top: 8px;
+}
+
+.reply-form input[type="text"],
+.reply-form textarea {
+  width: 100%;
+}
+
+.btn-small {
+  padding: 7px 14px;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .reply-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+.like-form { display: inline; margin: 0; }
+
+.note-post { align-items: flex-start; }
+
+/* =====================================================================
+   明信片（匹配结果页）
+   正面 = 你上传的图片，反面 = 命中的笔记配图 + 配文。
+   点击翻面走 CSS 3D（rotateY 180°），Canvas 特效由 js/postcard.js 驱动。
+   ===================================================================== */
+
+:root {
+  /* JS 会读取这个值，保证 canvas 特效节奏与 CSS 动画时长一致 */
+  --pc-flip-ms: 820ms;
+  --pc-paper: #fbf5e8;
+  --pc-paper-edge: #e6d9bd;
+  --pc-ink: #6b5232;
+  --pc-ink-soft: #8a7350;
+  --pc-gold: #c99a3f;
+}
+
+.postcard-stage {
+  position: relative;
+  margin: 22px auto 10px;
+  max-width: 660px;
+  padding: 40px 34px 34px;
+  /* 透视放在 stage 上，这样 canvas 本身不受 3D 影响 */
+  perspective: 1500px;
+  perspective-origin: 50% 46%;
+  isolation: isolate;
+}
+
+.postcard {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  /* 长宽比由服务端按图片算好，写在 --pc-ar 上 */
+  aspect-ratio: var(--pc-ar, 1.5);
+  margin: 0 auto;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.postcard:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 8px;
+  border-radius: 18px;
+}
+
+.postcard__inner {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transform: rotateY(0deg);
+  transition: transform var(--pc-flip-ms) cubic-bezier(0.45, 0.04, 0.2, 1);
+  will-change: transform;
+}
+
+.postcard.is-flipped .postcard__inner {
+  transform: rotateY(180deg);
+}
+
+/* 取景标记：不可见，只用来读出四个角的投影坐标 */
+.postcard__corner {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.postcard__corner[data-corner="tl"] { top: 0; left: 0; }
+.postcard__corner[data-corner="tr"] { top: 0; right: 0; }
+.postcard__corner[data-corner="br"] { bottom: 0; right: 0; }
+.postcard__corner[data-corner="bl"] { bottom: 0; left: 0; }
+
+/* ------------------------------------------------------------ 卡面 */
+.postcard__face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 16px;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border: 1px solid var(--pc-paper-edge);
+  background-color: var(--pc-paper);
+  /* 纸纹：细密横纹 + 边角轻微泛黄 */
+  background-image:
+    radial-gradient(120% 90% at 50% 45%, rgba(255, 255, 255, 0.75), rgba(245, 233, 208, 0.35) 70%, rgba(214, 193, 152, 0.35)),
+    repeating-linear-gradient(0deg, rgba(150, 124, 78, 0.045) 0 1px, transparent 1px 3px);
+  box-shadow:
+    0 14px 30px rgba(58, 44, 20, 0.18),
+    0 2px 4px rgba(58, 44, 20, 0.08),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+  transition: box-shadow var(--pc-flip-ms) ease;
+}
+
+.postcard__face::after {
+  /* 卡片内的一圈细线，像明信片的压印边 */
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border: 1px solid rgba(168, 142, 96, 0.35);
+  border-radius: 10px;
+  pointer-events: none;
+}
+
+.postcard__face--back {
+  transform: rotateY(180deg);
+}
+
+.postcard.is-flipped .postcard__face {
+  box-shadow:
+    0 20px 44px rgba(58, 44, 20, 0.24),
+    0 3px 6px rgba(58, 44, 20, 0.1),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+}
+
+/* ------------------------------------------------------ 正面 */
+/* 卡片比例已经跟随图片（--pc-ar），所以这里铺满即保持原比例，不裁不拉伸 */
+.pc-front {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.pc-front img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* 卡片比例已经等于图片比例，contain 即铺满；
+     极端比例被夹紧时宁可留一点纸边，也不裁掉图片内容 */
+  object-fit: contain;
+  background: var(--pc-paper);
+}
+
+.pc-front__fallback {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 5px 12px;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--pc-ink);
+  background: rgba(251, 245, 232, 0.86);
+  border-top-left-radius: 6px;
+}
+
+/* ------------------------------------------------------ 反面 */
+.pc-back {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  padding: 20px 20px 18px;
+  gap: 0;
+}
+
+.pc-back__left {
+  flex: 1 1 62%;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  padding-right: 18px;
+}
+
+.pc-back__note {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  font-family: "KaiTi", "楷体", "STKaiti", "华文楷体", "Segoe Script",
+               "Microsoft YaHei", cursive;
+  /* 字号由 postcard.js 按可用空间自动缩放，这里只是初值 */
+  font-size: 17px;
+  line-height: 1.68;
+  color: #33251a;
+  white-space: pre-wrap;
+  word-break: break-word;
+  /* 像写在明信片中间的一段话：左右留白 + 居中 */
+  text-align: center;
+  padding: 0 8% 0 8%;
+  scrollbar-width: thin;
+}
+
+/* 还没读到末尾时，底部渐隐（脚本切换这两个类） */
+.pc-back__note.is-overflowing:not(.is-at-bottom) {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 24px), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 24px), transparent);
+}
+
+/* 短笔记：垂直居中，别头重脚轻 */
+.pc-back__note.is-short {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.pc-back__note.is-short .pc-back__note-body {
+  margin: auto 0;
+}
+
+.pc-back__note--muted {
+  font-family: inherit;
+  color: var(--pc-ink-soft);
+  font-size: 13px;
+}
+
+/* 降级时的反面：没有命中笔记，只留一段说明 + 装饰音符 */
+.pc-back__empty {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 8px 6px;
+  border: 1px dashed rgba(168, 142, 96, 0.4);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.pc-back__empty-mark {
+  font-size: 26px;
+  line-height: 1;
+  color: rgba(168, 142, 96, 0.55);
+}
+
+.pc-back__empty-text {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--pc-ink-soft);
+}
+
+.pc-back__sign {
+  flex: 0 0 auto;
+  margin: 8px 0 0;
+  font-family: "KaiTi", "楷体", "STKaiti", "华文楷体", "Segoe Script", cursive;
+  font-size: 12.5px;
+  color: var(--pc-ink-soft);
+  text-align: right;
+}
+
+.pc-back__date {
+  margin-left: 8px;
+  letter-spacing: 0.06em;
+}
+
+.pc-back__divider {
+  flex: 0 0 0;
+  align-self: stretch;
+  border-left: 1px dashed rgba(150, 122, 74, 0.45);
+}
+
+.pc-back__right {
+  flex: 0 0 38%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  padding-left: 18px;
+}
+
+.pc-back__stamp {
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 60px;
+  margin-bottom: 12px;
+  border: 1px dashed rgba(150, 122, 74, 0.55);
+  border-radius: 2px;
+  background:
+    repeating-linear-gradient(135deg, rgba(201, 154, 63, 0.35) 0 6px, rgba(240, 226, 198, 0.5) 6px 12px);
+  color: var(--pc-ink);
+  font-size: 22px;
+  line-height: 1;
+  box-shadow: inset 0 0 0 3px var(--pc-paper);
+  transform: rotate(-2.5deg);
+}
+
+.pc-back__label {
+  margin: 0;
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  color: var(--pc-ink-soft);
+}
+
+.pc-back__song {
+  margin: 2px 0 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--pc-ink);
+  word-break: break-word;
+}
+
+.pc-back__artist {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: var(--pc-ink-soft);
+  word-break: break-word;
+}
+
+.pc-back__lines {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+.pc-back__lines i {
+  display: block;
+  height: 1px;
+  background: rgba(150, 122, 74, 0.28);
+}
+
+.pc-back__lines i:last-child { width: 62%; }
+
+.pc-back__mark {
+  margin-top: 10px;
+  font-size: 9.5px;
+  letter-spacing: 0.4em;
+  color: rgba(138, 115, 80, 0.65);
+}
+
+/* ------------------------------------------------- 特效画布与提示 */
+.postcard-fx {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.postcard-hint {
+  margin: 2px 0 20px;
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+/* 翻面后才出现的歌曲信息（歌名/歌手/播放器/入口） */
+.result-details {
+  animation: pc-reveal 460ms ease-out both;
+}
+
+@keyframes pc-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* =====================================================================
+   上传页：把表单做成一张明信片
+   正面放照片，反面写署名与留言；翻面复用 postcard.js（按钮触发）。
+   ===================================================================== */
+
+.postcard-form { margin: 18px 0 0; }
+
+.postcard-stage--compose {
+  max-width: 660px;
+  margin-top: 14px;
+}
+
+.postcard-stage--compose .postcard {
+  /* 表单得排得下：比例再扁，也留一个高度下限 */
+  min-height: 360px;
+}
+
+.postcard--manual { cursor: default; }
+
+/* ---------------------------------------------------------- 正面：照片位 */
+.pc-compose {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-align: center;
+  color: var(--pc-ink-soft);
+}
+
+.pc-compose:focus-within {
+  outline: 2px solid rgba(201, 154, 63, 0.75);
+  outline-offset: -6px;
+}
+
+.pc-compose__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 20px;
+}
+
+.pc-compose__plus {
+  font-size: 34px;
+  line-height: 1;
+  color: rgba(168, 142, 96, 0.55);
+}
+
+.pc-compose__text {
+  font-family: "KaiTi", "楷体", "STKaiti", "华文楷体", cursive;
+  font-size: 17px;
+  color: var(--pc-ink);
+}
+
+.pc-compose__tip {
+  font-size: 11.5px;
+  letter-spacing: 0.03em;
+}
+
+.pc-compose__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: var(--pc-paper);
+}
+
+.pc-compose__change {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 5px 12px;
+  font-size: 11.5px;
+  color: var(--pc-ink);
+  background: rgba(251, 245, 232, 0.86);
+  border-top-right-radius: 8px;
+}
+
+/* 原生文件框藏起来，但保留可聚焦（label 包着它，点哪儿都能选） */
+.pc-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.pc-next {
+  position: absolute;
+  right: 14px;
+  bottom: 12px;
+  z-index: 2;
+  padding: 7px 15px;
+  border: 1px solid rgba(150, 122, 74, 0.5);
+  border-radius: 999px;
+  background: rgba(251, 245, 232, 0.94);
+  color: var(--pc-ink);
+  font: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: background 140ms ease, border-color 140ms ease;
+}
+
+.pc-next:hover {
+  background: #fff;
+  border-color: var(--pc-gold);
+}
+
+/* ------------------------------------------------- 反面：署名与留言 */
+.pc-back--compose { padding: 20px 20px 18px; }
+
+.pc-back--compose .pc-back__left { flex: 1 1 62%; }
+
+/* 这两栏用不到明信片的地址横线，省出空间给输入框 */
+.pc-back--compose .pc-back__lines { display: none; }
+
+.pc-field-label {
+  display: block;
+  margin: 0 0 6px;
+  font-size: 10.5px;
+  letter-spacing: 0.24em;
+  color: var(--pc-ink-soft);
+}
+
+/* 选择器要压过 style.css 里通用的 input[type="text"] / textarea 规则 */
+input.pc-field,
+textarea.pc-field {
+  width: 100%;
+  padding: 5px 2px;
+  border: none;
+  border-bottom: 1px solid rgba(150, 122, 74, 0.4);
+  border-radius: 0;
+  background: transparent;
+  font-family: "KaiTi", "楷体", "STKaiti", "华文楷体", "Microsoft YaHei", cursive;
+  font-size: 15px;
+  color: #33251a;
+}
+
+input.pc-field::placeholder,
+textarea.pc-field::placeholder {
+  color: rgba(138, 115, 80, 0.55);
+}
+
+input.pc-field:focus,
+textarea.pc-field:focus {
+  outline: none;
+  border-bottom-color: var(--pc-gold);
+}
+
+/* 留言区做成一行一行的信纸线 */
+textarea.pc-field--area {
+  flex: 1 1 auto;
+  min-height: 0;
+  resize: none;
+  line-height: 26px;
+  padding: 0 2px;
+  border-bottom: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0 25px,
+    rgba(150, 122, 74, 0.2) 25px 26px
+  );
+  background-position: 0 0;
+}
+
+/* 像盖了个火漆印的寄出按钮 */
+.btn.pc-send {
+  align-self: stretch;
+  margin-top: auto;
+  padding: 9px 16px;
+  background: #b23b2e;
+  color: #fdf6ec;
+  text-align: center;
+  letter-spacing: 0.08em;
+}
+
+.btn.pc-send:hover { background: #99301f; }
+
+.pc-back-link {
+  margin-top: 8px;
+  align-self: center;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--pc-ink-soft);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.pc-back__right--compose { gap: 0; }
+
+@media (max-width: 560px) {
+  .postcard-stage--compose .postcard {
+    min-height: 420px;
+  }
+
+  .pc-back--compose {
+    flex-direction: column;
+    padding: 14px 14px 12px;
+  }
+
+  .pc-back--compose .pc-back__left {
+    flex: 1 1 auto;
+    padding-right: 0;
+  }
+
+  /* 署名一行、按钮一行；装饰邮票在窄屏没地方，收起来 */
+  .pc-back--compose .pc-back__right {
+    flex: 0 0 auto;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 6px 8px;
+    padding: 10px 0 0;
+    border-top: 1px dashed rgba(150, 122, 74, 0.4);
+  }
+
+  .pc-back--compose .pc-back__stamp {
+    display: none;
+  }
+
+  .pc-back--compose .pc-field-label {
+    display: block;
+    margin: 0;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+  }
+
+  .pc-back--compose .pc-field {
+    width: 100%;
+  }
+
+  .pc-back--compose .pc-send {
+    grid-column: 1 / -1;
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .pc-back--compose .pc-back-link {
+    grid-column: 1 / -1;
+    margin-top: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .result-details { animation: none; }
+}
+
+/* =====================================================================
+   留言墙：开发者入口（登录后可删除留言）
+   ===================================================================== */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.dev-panel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 22px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--border);
+  font-size: 13px;
+}
+
+.dev-entry summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.dev-entry summary::-webkit-details-marker { display: none; }
+
+.dev-link {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.dev-link:hover { color: var(--accent); }
+
+.dev-login-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.dev-login-form input[type="password"] {
+  width: 130px;
+  padding: 6px 9px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  font: inherit;
+  font-size: 13px;
+  background: #fff;
+  color: var(--text);
+}
+
+.dev-login-form input[type="password"]:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.dev-badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #fff1ee;
+  border: 1px solid #e8b4a8;
+  color: #a53a24;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+}
+
+.dev-inline-form { margin: 0; }
+
+/* 删除按钮：只在开发者模式下出现在每条留言的右上方 */
+.dev-delete-form {
+  margin: 0 0 0 auto;
+  padding-left: 10px;
+}
+
+.dev-delete-btn {
+  padding: 2px 10px;
+  border: 1px solid #e2b7ae;
+  border-radius: 999px;
+  background: #fff;
+  color: #a53a24;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.dev-delete-btn:hover {
+  background: #a53a24;
+  border-color: #a53a24;
+  color: #fff;
+}
+
+/* 两步确认的中间态：按钮变成「确认删除」 */
+.dev-delete-btn.is-armed {
+  background: #a53a24;
+  border-color: #a53a24;
+  color: #fff;
+  animation: dev-armed 900ms ease-in-out infinite alternate;
+}
+
+@keyframes dev-armed {
+  from { box-shadow: 0 0 0 0 rgba(165, 58, 36, 0.35); }
+  to   { box-shadow: 0 0 0 4px rgba(165, 58, 36, 0.12); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dev-delete-btn.is-armed { animation: none; }
+}
+
+/* ------------------------------------------- 结果页标题（右上角一枚手写签） */
+.result-card {
+  position: relative;
+  /* 右侧留出一条窄栏放竖排标题，正文不会被压窄得太狠 */
+  padding-right: 74px;
+}
+
+.result-head {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.result-title {
+  margin: 0;
+  font-family: "STXingkai", "华文行楷", "KaiTi", "楷体", "STKaiti", cursive;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  /* 竖排，像在卡片一角落的一笔 */
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  color: #7a5a2e;
+  opacity: 0.92;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.result-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  background: #b23b2e;
+  color: #fdf6ec;
+  font-family: "KaiTi", "楷体", "STKaiti", cursive;
+  font-size: 16px;
+  line-height: 1;
+  box-shadow: inset 0 0 0 2px rgba(253, 246, 236, 0.55);
+  transform: rotate(6deg);
+}
+
+/* ---------------------------------------- 歌曲信息 + 你上传的那张小图 */
+.song-block {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 18px 0;
+}
+
+.source-thumb {
+  flex: 0 0 auto;
+  width: 76px;
+  margin: 0;
+}
+
+.source-thumb img {
+  display: block;
+  width: 76px;
+  height: 76px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #f0f1f3;
+}
+
+.source-thumb figcaption {
+  margin-top: 5px;
+  font-size: 11.5px;
+  color: var(--text-muted);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.song-meta { min-width: 0; }
+
+.song-meta .song-name { margin: 0 0 2px; }
+.song-meta .artist { margin: 0; }
+
+@media (max-width: 560px) {
+  .postcard-stage {
+    padding: 30px 10px 24px;
+  }
+
+  .postcard {
+    max-width: 380px;
+  }
+
+  .pc-back {
+    flex-direction: column;
+    padding: 14px 14px 12px;
+  }
+
+  .pc-back__left {
+    flex: 1 1 auto;
+    padding-right: 0;
+  }
+
+  .pc-back__right {
+    flex: 0 0 auto;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 10px;
+    padding: 9px 0 0;
+    border-top: 1px dashed rgba(150, 122, 74, 0.4);
+  }
+
+  .pc-back__divider { display: none; }
+  .pc-back__stamp {
+    order: 2;
+    width: 34px;
+    height: 40px;
+    margin: 0 0 0 auto;
+    font-size: 15px;
+  }
+  .pc-back__label { display: none; }
+  .pc-back__song { margin: 0; font-size: 14px; }
+  .pc-back__artist { margin: 0; }
+  .pc-back__lines { display: none; }
+  .pc-back__mark { display: none; }
+
+  .result-title { font-size: 24px; }
+  .result-seal { width: 26px; height: 26px; font-size: 14px; }
+
+  /* 窄屏回到常规流：横排、右对齐，避免和正文抢那条窄栏 */
+  .result-card { padding-right: 20px; }
+
+  .result-head {
+    position: static;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    margin: 0 0 6px;
+  }
+
+  .result-title {
+    writing-mode: horizontal-tb;
+    font-size: 22px;
+    letter-spacing: 0.08em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .postcard__inner {
+    transition: none;
+  }
+}
+
+/* 正面沿用 .postcard__face 的通用样式，这里只做显式声明 */
+.postcard__face--front { }
+
+/* --------------------------------------------------- starry wall search */
+.wall-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 14px 0 10px;
+}
+
+.wall-search input[type="search"] {
+  flex: 1 1 240px;
+  min-width: 0;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+
+.wall-search input[type="search"]:focus {
+  outline: 2px solid rgba(31, 35, 41, 0.18);
+  outline-offset: 1px;
+}
+
+.wall-search__clear { white-space: nowrap; }
+
+/* --------------------------------------------------- mobile playback */
+.play-song {
+  margin: 0 0 10px;
+}
+
+@media (max-width: 640px) {
+  .play-song {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .postcard-hint {
+    font-size: 13px;
+  }
+
+  .audio-block audio {
+    min-height: 44px;
+  }
+}

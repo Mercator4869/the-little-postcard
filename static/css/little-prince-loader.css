@@ -1,0 +1,1486 @@
+.lp-loader, .lp-loader * { box-sizing: border-box; }
+
+.lp-loader {
+  --lp-paper: #f6f0e3;
+  --lp-paper-light: #fbf7ee;
+  --lp-ink: #4f5a6d;
+  --lp-ink-soft: #6d788c;
+  --lp-ink-faint: rgba(79, 90, 109, 0.42);
+  --lp-blue: #94a9c2;
+  --lp-blue-deep: #71849e;
+  --lp-rose: #ceb0a7;
+  --lp-gold: #b59a68;
+  --lp-gold-soft: #dbc79f;
+  --lp-outer-deep: #06152b;
+  --lp-outer-mid: #0a203b;
+  --lp-outer-ink: rgba(247, 238, 220, 0.92);
+  --lp-outer-ink-soft: rgba(224, 227, 225, 0.66);
+  --lp-outer-gold: #edd39a;
+  --lp-hand: "Caveat", "Segoe Print", "Bradley Hand", "KaiTi", cursive;
+  --lp-chinese: "KaiTi", STKaiti, "Kaiti SC", "Songti SC", "Noto Serif SC", serif;
+  --lp-serif: "EB Garamond", "Palatino Linotype", Palatino, Georgia, serif;
+  --lp-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+
+
+
+
+.lp-loader {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--lp-outer-deep);
+  transition: opacity 0.9s var(--lp-ease), visibility 0.9s;
+}
+
+.lp-loader--lp-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ── paper ────────────────────────────────────────────────── */
+
+.lp-paper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 58% 44% at 10% 12%, rgba(28, 75, 116, 0.44), transparent 68%),
+    radial-gradient(ellipse 52% 42% at 92% 12%, rgba(26, 63, 104, 0.52), transparent 68%),
+    radial-gradient(ellipse 62% 46% at 86% 88%, rgba(18, 56, 89, 0.5), transparent 70%),
+    radial-gradient(ellipse 46% 36% at 8% 84%, rgba(20, 44, 78, 0.55), transparent 70%),
+    radial-gradient(ellipse 70% 55% at 52% 50%, rgba(20, 52, 88, 0.26), transparent 72%),
+    linear-gradient(138deg, #06152b 0%, #081b33 36%, #0a203b 62%, #051225 100%);
+}
+
+.lp-still-stars {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.lp-paper-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.2;
+  mix-blend-mode: soft-light;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='.45'/%3E%3C/svg%3E");
+}
+
+/* ── page notes ───────────────────────────────────────────── */
+
+.lp-page-head {
+  position: absolute;
+  z-index: 20;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: clamp(22px, 4vh, 42px) clamp(24px, 4vw, 62px);
+  pointer-events: none;
+}
+
+.lp-brand {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  transform: rotate(-1deg);
+}
+
+.lp-brand-star {
+  margin-top: 5px;
+  color: var(--lp-outer-gold);
+  font-size: 14px;
+  line-height: 1;
+  opacity: 0.92;
+  text-shadow: 0 0 16px rgba(243, 210, 143, 0.24);
+}
+
+.lp-brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.lp-brand-text b {
+  font-family: var(--lp-hand);
+  font-size: clamp(22px, 2vw, 29px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: var(--lp-outer-ink);
+  text-shadow: 0 2px 22px rgba(2, 10, 22, 0.55);
+}
+
+.lp-brand-text small {
+  margin-left: 2px;
+  font-family: var(--lp-chinese);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.19em;
+  color: var(--lp-outer-ink-soft);
+}
+
+.lp-head-note {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 9px;
+  font-family: var(--lp-hand);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: rgba(237, 233, 221, 0.7);
+  transform: rotate(0.6deg);
+}
+
+.lp-head-note i {
+  width: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(215, 227, 240, 0.08), rgba(215, 227, 240, 0.45));
+}
+
+.lp-margin-note {
+  position: absolute;
+  z-index: 6;
+  left: clamp(42px, 4vw, 64px);
+  top: 33%;
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  color: rgba(232, 229, 217, 0.62);
+  pointer-events: none;
+}
+
+.lp-margin-rule {
+  display: block;
+  width: 1px;
+  height: 66px;
+  margin-top: 4px;
+  background: linear-gradient(180deg, rgba(215, 228, 240, 0.05), rgba(215, 228, 240, 0.42), transparent);
+}
+
+.lp-margin-note p {
+  margin: 0;
+  font-family: var(--lp-chinese);
+  font-size: 11px;
+  line-height: 2.02;
+  letter-spacing: 0.12em;
+}
+
+.lp-margin-star {
+  align-self: flex-end;
+  margin-left: -36px;
+  margin-bottom: -24px;
+  color: var(--lp-outer-gold);
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+/* ── sky & washes ─────────────────────────────────────────── */
+
+.lp-sky {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.lp-night-wash {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 44%;
+  width: min(94vw, 1270px);
+  height: min(79vh, 790px);
+  transform: translate(-50%, -50%) rotate(-0.6deg);
+  opacity: 0.96;
+}
+
+.lp-starfall {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(ellipse 57% 49% at 50% 44%, #000 30%, rgba(0, 0, 0, 0.84) 60%, transparent 85%);
+  mask-image: radial-gradient(ellipse 57% 49% at 50% 44%, #000 30%, rgba(0, 0, 0, 0.84) 60%, transparent 85%);
+}
+
+.lp-moon {
+  position: absolute;
+  z-index: 3;
+  right: 10.5%;
+  top: 14.5%;
+  width: clamp(92px, 9.2vw, 145px);
+  height: auto;
+  transform: rotate(4deg);
+  opacity: 0.92;
+  filter: drop-shadow(0 0 20px rgba(255, 230, 173, 0.22));
+}
+
+.lp-small-planet {
+  position: absolute;
+  z-index: 4;
+  left: 7.5%;
+  bottom: 18%;
+  width: clamp(118px, 12.7vw, 184px);
+  height: auto;
+  transform: rotate(-2deg);
+  opacity: 0.92;
+  filter: drop-shadow(0 0 18px rgba(247, 223, 174, 0.16));
+}
+
+.lp-constellation {
+  position: absolute;
+  z-index: 3;
+  left: 24%;
+  top: 14%;
+  width: clamp(160px, 17vw, 248px);
+  opacity: 0.7;
+  transform: rotate(-1deg);
+}
+
+.lp-constellation svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.lp-star-dust {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.lp-dust {
+  position: absolute;
+  display: block;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(236, 216, 166, 0.58);
+  box-shadow: 0 0 6px rgba(238, 210, 145, 0.28);
+  opacity: 0;
+  animation: lp-dust-drift 9s linear infinite;
+}
+
+.lp-dust--1 {
+  left: 33%;
+  top: 26%;
+  animation-delay: 0.6s;
+}
+
+.lp-dust--2 {
+  left: 66%;
+  top: 35%;
+  width: 2px;
+  height: 2px;
+  background: rgba(222, 229, 235, 0.5);
+  animation-delay: 3.2s;
+  animation-duration: 11s;
+}
+
+.lp-dust--3 {
+  left: 42%;
+  top: 58%;
+  width: 2px;
+  height: 2px;
+  animation-delay: 5s;
+  animation-duration: 8s;
+}
+
+.lp-dust--4 {
+  left: 75%;
+  top: 62%;
+  background: rgba(245, 225, 177, 0.55);
+  animation-delay: 1.7s;
+  animation-duration: 10s;
+}
+
+.lp-dust--5 {
+  left: 23%;
+  top: 45%;
+  width: 2px;
+  height: 2px;
+  animation-delay: 7s;
+  animation-duration: 12s;
+}
+
+.lp-dust--6 {
+  left: 84%;
+  top: 23%;
+  width: 1.5px;
+  height: 1.5px;
+  animation-delay: 4.3s;
+  animation-duration: 7.5s;
+}
+
+.lp-page-star {
+  position: absolute;
+  display: block;
+  font-family: var(--lp-hand);
+  color: rgba(222, 232, 240, 0.56);
+  line-height: 1;
+  opacity: 0.86;
+}
+
+.lp-page-star--1 {
+  left: 14%;
+  top: 22%;
+  font-size: 16px;
+  transform: rotate(-8deg);
+}
+
+.lp-page-star--2 {
+  right: 7%;
+  top: 37%;
+  font-size: 12px;
+  color: rgba(244, 219, 161, 0.66);
+  transform: rotate(12deg);
+}
+
+.lp-page-star--3 {
+  right: 19%;
+  bottom: 27%;
+  font-size: 18px;
+  transform: rotate(5deg);
+  opacity: 0.68;
+}
+
+.lp-page-star--4 {
+  left: 27%;
+  bottom: 16%;
+  font-size: 10px;
+  color: rgba(240, 214, 159, 0.56);
+  transform: rotate(-14deg);
+}
+
+/* ── flight ───────────────────────────────────────────────── */
+
+.lp-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+}
+
+.lp-flight-holder {
+  position: absolute;
+  left: 50%;
+  top: 47%;
+  width: min(78vw, 960px);
+  transform: translate(-50%, -50%);
+}
+
+.lp-flight {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 900 / 520;
+  animation: lp-flight-float 8.4s var(--lp-ease) infinite;
+  will-change: transform;
+}
+
+.lp-wings {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.lp-wing-inner {
+  transform-box: view-box;
+  transform-origin: 338px 272px;
+  animation: lp-wing-flap 6.2s var(--lp-ease) infinite;
+}
+
+.lp-wing--left .lp-wing-inner {
+  animation-delay: -0.15s;
+}
+
+.lp-wing--right .lp-wing-inner {
+  animation-delay: -0.4s;
+}
+
+.lp-feather-fill {
+  fill: rgba(203, 219, 234, 0.56);
+}
+
+.lp-feather-ink {
+  fill: none;
+  stroke: rgba(84, 98, 119, 0.76);
+  stroke-width: 1.05;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.lp-feather-line {
+  fill: none;
+  stroke: rgba(91, 107, 129, 0.48);
+  stroke-width: 0.72;
+  stroke-linecap: round;
+}
+
+.lp-feather-scribble {
+  fill: none;
+  stroke: rgba(95, 108, 127, 0.36);
+  stroke-width: 0.58;
+  stroke-linecap: round;
+}
+
+.lp-wing-sketches {
+  stroke: rgba(89, 104, 126, 0.4);
+  stroke-width: 0.78;
+}
+
+.lp-wing-stars {
+  fill: #6b7991;
+  opacity: 0.45;
+}
+
+.lp-wing--right .lp-feather-fill {
+  fill: rgba(232, 218, 205, 0.56);
+}
+
+/* ── postcard ─────────────────────────────────────────────── */
+
+.lp-postcard {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: 50%;
+  width: clamp(240px, 27vw, 398px);
+  aspect-ratio: 3 / 2;
+  transform: translate(-50%, -50%) rotate(-2.2deg);
+  container-type: inline-size;
+  filter:
+    drop-shadow(0 9px 20px rgba(4, 16, 34, 0.3))
+    drop-shadow(0 0 20px rgba(255, 252, 243, 0.62))
+    drop-shadow(0 0 46px rgba(255, 247, 233, 0.2));
+}
+
+.lp-postcard::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -24% -17%;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse at center, rgba(255, 253, 247, 0.44) 0%, rgba(255, 251, 241, 0.19) 34%, rgba(255, 246, 232, 0.05) 58%, transparent 72%);
+  filter: blur(18px);
+  pointer-events: none;
+  animation: lp-card-halo 8.5s ease-in-out infinite;
+}
+
+.lp-card-outline {
+  position: absolute;
+  z-index: 4;
+  inset: -6px;
+  width: calc(100% + 12px);
+  height: calc(100% + 12px);
+  overflow: visible;
+  pointer-events: none;
+}
+
+.lp-card-outline path {
+  fill: none;
+  stroke: rgba(79, 92, 111, 0.62);
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.lp-card-outline .lp-card-outline-pencil {
+  stroke: rgba(103, 113, 126, 0.24);
+  stroke-width: 0.7;
+  stroke-dasharray: 1 3;
+}
+
+.lp-card-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 2px 3px 2px 3px;
+  background:
+    radial-gradient(ellipse at 14% 12%, rgba(255, 255, 255, 0.58), transparent 54%),
+    linear-gradient(132deg, #fcf7ea 0%, #faf3e3 55%, #f5ecda 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.7),
+    inset 0 0 26px rgba(103, 84, 54, 0.06);
+}
+
+.lp-card-wash {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 46% 40% at 7% 0%, rgba(154, 178, 203, 0.32), transparent 62%),
+    radial-gradient(ellipse 42% 45% at 98% 100%, rgba(220, 190, 170, 0.28), transparent 64%),
+    radial-gradient(ellipse 36% 29% at 54% 104%, rgba(228, 205, 163, 0.24), transparent 68%),
+    radial-gradient(ellipse 23% 20% at 88% 20%, rgba(216, 183, 177, 0.12), transparent 70%);
+}
+
+.lp-card-left {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 56%;
+  padding: 6.2cqw 4.6cqw 4.6cqw 6cqw;
+  display: flex;
+  flex-direction: column;
+  color: var(--lp-ink);
+}
+
+.lp-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 3.2cqw;
+  padding-right: 4cqw;
+}
+
+.lp-card-head span {
+  font-family: var(--lp-hand);
+  font-size: clamp(9px, 3.9cqw, 15px);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: rgba(73, 86, 105, 0.74);
+}
+
+.lp-card-head i {
+  font-style: normal;
+  color: var(--lp-gold);
+  font-size: clamp(7px, 3.2cqw, 11px);
+  opacity: 0.8;
+}
+
+.lp-card-salutation {
+  margin: 0 0 2.1cqw;
+  font-family: var(--lp-chinese);
+  font-size: clamp(8.5px, 3.35cqw, 12.6px);
+  letter-spacing: 0.06em;
+  color: rgba(65, 79, 99, 0.82);
+}
+
+.lp-card-note {
+  transform: rotate(-0.7deg);
+}
+
+.lp-card-note p {
+  margin: 0;
+  font-family: var(--lp-chinese);
+  font-size: clamp(8.8px, 3.45cqw, 13.2px);
+  line-height: 1.88;
+  letter-spacing: 0.035em;
+  color: rgba(58, 72, 94, 0.94);
+}
+
+.lp-card-sign {
+  margin: 2.2cqw 2cqw 0 auto;
+  font-family: var(--lp-hand);
+  font-size: clamp(10px, 4.1cqw, 15px);
+  color: rgba(72, 85, 104, 0.82);
+  transform: rotate(-2deg);
+}
+
+.lp-card-doodle {
+  width: 32%;
+  height: auto;
+  margin-top: auto;
+  opacity: 0.9;
+}
+
+.lp-card-fold {
+  position: absolute;
+  z-index: 2;
+  left: 56%;
+  top: 6.5%;
+  bottom: 6.5%;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(88, 103, 122, 0.18) 14%, rgba(88, 103, 122, 0.23) 82%, transparent);
+}
+
+.lp-card-fold::after {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 5%;
+  bottom: 5%;
+  width: 1px;
+  background: rgba(91, 104, 118, 0.06);
+}
+
+.lp-card-right {
+  position: absolute;
+  z-index: 2;
+  left: 56%;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  color: var(--lp-ink);
+}
+
+.lp-stamp {
+  position: absolute;
+  top: 7%;
+  right: 8%;
+  width: 34%;
+  transform: rotate(2.4deg);
+  opacity: 0.96;
+}
+
+.lp-stamp svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.lp-postmark {
+  position: absolute;
+  top: 10%;
+  left: 3%;
+  width: 32%;
+  aspect-ratio: 1;
+  transform: rotate(-14deg);
+  color: rgba(145, 109, 103, 0.48);
+}
+
+.lp-postmark-ring {
+  position: absolute;
+  inset: 0;
+  border: 0.8px solid currentColor;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2.2px rgba(78, 92, 111, 0.06), inset 0 0 0 3px currentColor;
+}
+
+.lp-postmark-text {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-family: var(--lp-chinese);
+  font-size: clamp(3.5px, 1.62cqw, 5.6px);
+  line-height: 1.7;
+  letter-spacing: 0.08em;
+}
+
+.lp-postmark-text em {
+  font-style: normal;
+  font-family: var(--lp-hand);
+  font-size: 1.2em;
+  letter-spacing: 0.06em;
+}
+
+.lp-postmark-lines {
+  position: absolute;
+  left: 86%;
+  top: 42%;
+  width: 105%;
+  height: 38%;
+  background: repeating-linear-gradient(180deg, transparent 0 24%, currentColor 24% calc(24% + 0.5px), transparent calc(24% + 0.5px) 31%);
+  opacity: 0.58;
+}
+
+.lp-ps-note {
+  position: absolute;
+  top: 56%;
+  left: 6%;
+  margin: 0;
+  font-family: var(--lp-chinese);
+  font-size: clamp(4.5px, 2.05cqw, 7.2px);
+  letter-spacing: 0.06em;
+  color: rgba(80, 91, 105, 0.6);
+  transform: rotate(-1.2deg);
+}
+
+.lp-address {
+  position: absolute;
+  left: 6%;
+  right: 9%;
+  bottom: 17%;
+}
+
+.lp-address-label {
+  display: block;
+  margin-bottom: 2.2cqw;
+  font-family: var(--lp-chinese);
+  font-size: clamp(5px, 2.3cqw, 8px);
+  letter-spacing: 0.08em;
+  color: rgba(65, 80, 101, 0.74);
+}
+
+.lp-address-line {
+  display: block;
+  height: 1px;
+  margin-top: 2.9cqw;
+  background: linear-gradient(90deg, rgba(82, 97, 117, 0.42), rgba(82, 97, 117, 0.16) 72%, transparent);
+}
+
+.lp-address-line:last-child {
+  width: 72%;
+}
+
+.lp-edition {
+  position: absolute;
+  left: 6%;
+  bottom: 6%;
+  margin: 0;
+  font-family: var(--lp-hand);
+  font-size: clamp(4.5px, 1.9cqw, 6.6px);
+  letter-spacing: 0.12em;
+  color: rgba(82, 94, 109, 0.54);
+}
+
+/* ── wind & loose feathers ────────────────────────────────── */
+
+.lp-wind-art {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  animation: lp-wind-breathe 7.6s var(--lp-ease) infinite;
+}
+
+.lp-wind {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.lp-wind-line {
+  position: absolute;
+  display: block;
+  height: 22px;
+  border-top: 1px solid rgba(213, 226, 239, 0.4);
+  border-radius: 50%;
+  opacity: 0;
+  animation: lp-wind-sweep 5.4s linear infinite;
+}
+
+.lp-wind-line::after {
+  content: "";
+  position: absolute;
+  right: 4px;
+  top: -4px;
+  width: 8px;
+  height: 8px;
+  border-top: 1px solid rgba(213, 226, 239, 0.32);
+  border-radius: 50%;
+  transform: rotate(48deg);
+}
+
+.lp-wind-line--1 {
+  left: 8%;
+  top: 25%;
+  width: 16%;
+  transform: rotate(-8deg);
+  animation-delay: 0.3s;
+}
+
+.lp-wind-line--2 {
+  right: 3%;
+  top: 44%;
+  width: 19%;
+  transform: rotate(180deg);
+  animation-delay: 2.4s;
+  animation-duration: 6.2s;
+  border-color: rgba(230, 204, 143, 0.34);
+}
+
+.lp-wind-line--3 {
+  left: 21%;
+  bottom: 18%;
+  width: 16%;
+  transform: rotate(-4deg);
+  animation-delay: 3.6s;
+  animation-duration: 6.8s;
+  border-color: rgba(213, 226, 239, 0.3);
+}
+
+.lp-wind-line--4 {
+  right: 21%;
+  bottom: 8%;
+  width: 12%;
+  transform: rotate(174deg);
+  animation-delay: 1.2s;
+  animation-duration: 7.3s;
+  border-color: rgba(230, 204, 143, 0.28);
+}
+
+.lp-loose-feather {
+  position: absolute;
+  z-index: 5;
+  display: block;
+  width: 19px;
+  height: 7px;
+  border: 1px solid rgba(220, 232, 243, 0.45);
+  border-radius: 100% 0 100% 0;
+  background: rgba(215, 229, 242, 0.34);
+  opacity: 0;
+  animation: lp-feather-loose 12s linear infinite;
+}
+
+.lp-loose-feather--1 {
+  left: 19%;
+  bottom: 28%;
+  animation-delay: 2.6s;
+}
+
+.lp-loose-feather--2 {
+  right: 15%;
+  bottom: 38%;
+  width: 13px;
+  height: 5px;
+  animation-delay: 7.2s;
+  animation-duration: 14s;
+  background: rgba(239, 224, 202, 0.3);
+}
+
+.lp-loose-feather--3 {
+  left: 42%;
+  top: 78%;
+  width: 10px;
+  height: 4px;
+  animation-delay: 10s;
+  animation-duration: 16s;
+  background: rgba(232, 219, 201, 0.26);
+}
+
+/* ── HUD ──────────────────────────────────────────────────── */
+
+.lp-hud {
+  position: absolute;
+  z-index: 20;
+  left: 50%;
+  bottom: clamp(24px, 4.6vh, 48px);
+  width: min(360px, 83vw);
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.lp-hud-copy {
+  margin: 0;
+  font-family: var(--lp-chinese);
+  font-size: clamp(12px, 1.06vw, 14.5px);
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  line-height: 1.8;
+  color: rgba(249, 241, 224, 0.94);
+  text-shadow: 0 2px 18px rgba(2, 9, 20, 0.7);
+  transition: color 0.6s ease;
+}
+
+.lp-progress {
+  margin-top: clamp(13px, 2.1vh, 20px);
+}
+
+.lp-progress-meta {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 2px;
+}
+
+.lp-progress-status {
+  padding-bottom: 2px;
+  font-family: var(--lp-chinese);
+  font-size: clamp(8.5px, 0.73vw, 10px);
+  letter-spacing: 0.11em;
+  color: rgba(238, 215, 164, 0.84);
+  text-align: left;
+  transition: color 0.4s ease;
+}
+
+.lp-progress-count {
+  display: inline-flex;
+  align-items: baseline;
+  color: rgba(249, 241, 224, 0.94);
+  font-variant-numeric: tabular-nums;
+}
+
+.lp-progress-count b {
+  min-width: 1.5ch;
+  font-family: var(--lp-hand);
+  font-size: clamp(27px, 2.25vw, 34px);
+  font-weight: 500;
+  line-height: 0.92;
+  letter-spacing: 0.02em;
+  text-align: right;
+}
+
+.lp-progress-count i {
+  margin-left: 2px;
+  font-style: normal;
+  font-family: var(--lp-hand);
+  font-size: 12px;
+  color: rgba(238, 220, 181, 0.66);
+}
+
+.lp-progress-line {
+  display: block;
+  width: 100%;
+  height: 16px;
+  margin-top: 7px;
+  overflow: visible;
+}
+
+.lp-progress-track {
+  fill: none;
+  stroke: rgba(198, 217, 235, 0.28);
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-dasharray: 1.5 4;
+}
+
+.lp-progress-fill {
+  fill: none;
+  stroke: rgba(246, 218, 157, 0.86);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+}
+
+.lp-progress-star {
+  fill: rgba(248, 221, 158, 0.95);
+}
+
+.lp-hud-sub {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: clamp(11px, 1.8vh, 16px) 0 0;
+  font-family: var(--lp-hand);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: rgba(218, 222, 222, 0.42);
+}
+
+.lp-hud-sub span {
+  width: 28px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(211, 225, 240, 0.32));
+}
+
+.lp-hud-sub span:last-child {
+  background: linear-gradient(90deg, rgba(211, 225, 240, 0.32), transparent);
+}
+
+/* ── replay ───────────────────────────────────────────────── */
+
+.lp-replay {
+  position: absolute;
+  z-index: 30;
+  right: clamp(22px, 3.4vw, 56px);
+  bottom: clamp(24px, 4.6vh, 48px);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 2px;
+  border: 0;
+  border-bottom: 1px solid rgba(219, 229, 239, 0.4);
+  background: transparent;
+  color: rgba(243, 237, 220, 0.76);
+  font-family: var(--lp-chinese);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(5px);
+  transition:
+    opacity 0.5s var(--lp-ease),
+    visibility 0.5s,
+    transform 0.5s var(--lp-ease),
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.lp-replay span {
+  font-family: var(--lp-hand);
+  font-size: 16px;
+  line-height: 1;
+  color: var(--lp-outer-gold);
+}
+
+.lp-replay:hover {
+  color: rgba(255, 248, 231, 0.98);
+  border-color: rgba(240, 214, 159, 0.7);
+}
+
+.lp-replay:focus-visible {
+  outline: 1px dashed rgba(230, 224, 205, 0.75);
+  outline-offset: 4px;
+}
+
+.lp-is-complete .lp-replay {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* ── completion ───────────────────────────────────────────── */
+
+.lp-is-complete .lp-flight {
+  animation: lp-flight-arrived 5.2s var(--lp-ease) infinite;
+}
+
+.lp-is-complete .lp-wing-inner {
+  animation: lp-wing-open 4.6s var(--lp-ease) infinite;
+}
+
+.lp-is-complete .lp-hud-copy {
+  color: rgba(255, 249, 235, 1);
+}
+
+.lp-is-complete .lp-progress-status {
+  color: rgba(248, 220, 160, 0.9);
+}
+
+.lp-is-complete .lp-card-doodle {
+  animation: lp-doodle-sway 4.5s ease-in-out infinite;
+}
+
+/* ── no-JS ───────────────────────────────────────────────── */
+
+
+
+/* ── keyframes ────────────────────────────────────────────── */
+
+@keyframes lp-flight-float {
+  0%,
+  100% {
+    transform: translateY(5px) rotate(-0.3deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(0.45deg);
+  }
+}
+
+@keyframes lp-flight-arrived {
+  0%,
+  100% {
+    transform: translateY(-8px) rotate(-0.25deg);
+  }
+  50% {
+    transform: translateY(-17px) rotate(0.4deg);
+  }
+}
+
+@keyframes lp-wing-flap {
+  0%,
+  100% {
+    transform: rotate(-1.5deg) translateY(0) scaleX(1);
+  }
+  42% {
+    transform: rotate(1.7deg) translateY(2px) scaleX(0.965);
+  }
+  55% {
+    transform: rotate(2.2deg) translateY(3px) scaleX(0.955);
+  }
+  75% {
+    transform: rotate(-0.5deg) translateY(0) scaleX(0.99);
+  }
+}
+
+@keyframes lp-wing-open {
+  0%,
+  100% {
+    transform: rotate(-3.4deg) translateY(-1px) scaleX(1.02);
+  }
+  50% {
+    transform: rotate(-1.4deg) translateY(0) scaleX(0.995);
+  }
+}
+
+@keyframes lp-dust-drift {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -18px, 0);
+  }
+  15% {
+    opacity: 0.8;
+  }
+  70% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(12px, 150px, 0);
+  }
+}
+
+@keyframes lp-wind-sweep {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -20px, 0) rotate(-8deg);
+  }
+  18% {
+    opacity: 0.7;
+  }
+  70% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-8px, 44px, 0) rotate(-8deg);
+  }
+}
+
+@keyframes lp-feather-loose {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -15px, 0) rotate(8deg);
+  }
+  12% {
+    opacity: 0.6;
+  }
+  65% {
+    opacity: 0.34;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-40px, 170px, 0) rotate(100deg);
+  }
+}
+
+@keyframes lp-card-halo {
+  0%,
+  100% {
+    opacity: 0.72;
+    transform: scale(0.97);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+}
+
+@keyframes lp-wind-breathe {
+  0%,
+  100% {
+    transform: translateY(2px);
+    opacity: 0.92;
+  }
+  50% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+@keyframes lp-doodle-sway {
+  0%,
+  100% {
+    transform: rotate(-1deg) translateY(0);
+  }
+  50% {
+    transform: rotate(1.5deg) translateY(-2px);
+  }
+}
+
+/* ── responsive ──────────────────────────────────────────── */
+
+@media (max-width: 1100px) {
+  .lp-margin-note {
+    display: none;
+  }
+
+  .lp-constellation {
+    left: 17%;
+    top: 13%;
+  }
+}
+
+@media (max-width: 900px) {
+  .lp-head-note {
+    font-size: 12px;
+  }
+
+  .lp-flight-holder {
+    width: min(88vw, 760px);
+  }
+
+  .lp-postcard {
+    width: clamp(228px, 30vw, 310px);
+  }
+
+  .lp-night-wash {
+    width: 112vw;
+    height: 72vh;
+    top: 43%;
+  }
+
+  .lp-hud {
+    bottom: max(22px, env(safe-area-inset-bottom));
+    width: min(340px, 84vw);
+  }
+
+  .lp-replay {
+    bottom: max(18px, env(safe-area-inset-bottom));
+    right: 20px;
+  }
+}
+
+@media (max-width: 620px) {
+  .lp-page-head {
+    padding: 20px 20px;
+  }
+
+  .lp-brand-star {
+    font-size: 11px;
+  }
+
+  .lp-brand-text b {
+    font-size: 20px;
+  }
+
+  .lp-brand-text small {
+    font-size: 8px;
+    letter-spacing: 0.13em;
+  }
+
+  .lp-head-note {
+    display: none;
+  }
+
+  .lp-night-wash {
+    width: 128vw;
+    height: 66vh;
+    top: 41%;
+  }
+
+  .lp-starfall {
+    -webkit-mask-image: radial-gradient(ellipse 55% 46% at 50% 43%, #000 26%, rgba(0, 0, 0, 0.66) 58%, transparent 82%);
+    mask-image: radial-gradient(ellipse 55% 46% at 50% 43%, #000 26%, rgba(0, 0, 0, 0.66) 58%, transparent 82%);
+  }
+
+  .lp-moon {
+    right: 5%;
+    top: 13%;
+    width: 78px;
+    opacity: 0.7;
+  }
+
+  .lp-constellation {
+    display: none;
+  }
+
+  .lp-small-planet {
+    left: 2%;
+    bottom: 20%;
+    width: 96px;
+    opacity: 0.6;
+  }
+
+  .lp-flight-holder {
+    top: 44.5%;
+    width: 540px;
+  }
+
+  .lp-postcard {
+    width: clamp(230px, 64vw, 266px);
+  }
+
+  .lp-card-note p {
+    font-size: clamp(8px, 3.6cqw, 10.4px);
+  }
+
+  .lp-card-salutation {
+    font-size: clamp(7.5px, 3.4cqw, 9.6px);
+  }
+
+  .lp-card-head span {
+    font-size: clamp(8px, 3.6cqw, 10.8px);
+  }
+
+  .lp-postmark {
+    left: 4%;
+  }
+
+  .lp-hud {
+    width: min(310px, 86vw);
+    bottom: max(20px, env(safe-area-inset-bottom));
+  }
+
+  .lp-hud-copy {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+  }
+
+  .lp-progress-count b {
+    font-size: 27px;
+  }
+
+  .lp-hud-sub {
+    display: none;
+  }
+
+  .lp-replay {
+    top: auto;
+    right: 18px;
+    bottom: 118px;
+    font-size: 10px;
+  }
+}
+
+@media (max-height: 700px) and (min-width: 621px) {
+  .lp-flight-holder {
+    top: 44%;
+    width: min(70vw, 780px);
+  }
+
+  .lp-postcard {
+    width: clamp(210px, 22vw, 280px);
+  }
+
+  .lp-hud {
+    bottom: 18px;
+  }
+
+  .lp-hud-sub {
+    display: none;
+  }
+
+  .lp-progress {
+    margin-top: 9px;
+  }
+
+  .lp-night-wash {
+    height: 82vh;
+  }
+
+  .lp-small-planet {
+    width: 100px;
+    bottom: 13%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-loader *,
+  .lp-loader *::before,
+  .lp-loader *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .lp-flight {
+    transform: translateY(-5px);
+  }
+
+  .lp-wind-line,
+  .lp-loose-feather {
+    display: none;
+  }
+}
+
+/* Decorative SVG hooks kept for future hand-drawn variants. */
+.lp-feathers,
+.lp-ink-stars,
+.lp-wing-wash {
+  pointer-events: none;
+}
+
+/* ============================================================
+   Overlay integration
+   ============================================================ */
+
+html.lp-loader-pending .lp-loader {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+body.lp-loader-open {
+  overflow: hidden;
+}
+
+.lp-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  font-family: var(--lp-chinese);
+  font-size: 15px;
+  line-height: 1.65;
+  transition: opacity 0.85s var(--lp-ease);
+}
+
+.lp-loader.lp-is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.lp-loader.lp-is-leaving {
+  opacity: 0;
+  visibility: visible;
+  pointer-events: none;
+}
+
+.lp-loader main {
+  padding: 0;
+}
+
+.lp-loader .lp-hud,
+.lp-loader .lp-page-head,
+.lp-loader .lp-margin-note {
+  transition: opacity 0.6s var(--lp-ease);
+}
+
+.lp-loader.lp-is-complete .lp-hud-copy {
+  color: #fff9eb;
+}
+
+/* Hide the standalone demo's replay affordance if an older partial is reused. */
+.lp-loader .lp-replay {
+  display: none;
+}
+
+/* Do not draw a full progress line before the loader script has measured it. */
+.lp-loader .lp-progress-fill {
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+}
+
+.lp-loader .lp-progress-star {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-loader.lp-is-visible,
+  .lp-loader.lp-is-leaving {
+    transition-duration: 0.001ms;
+  }
+}

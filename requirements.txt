@@ -1,0 +1,35 @@
+# 图片匹配音乐 Demo — Python 依赖
+#
+# ⚠️ 版本状态：**尚未实测**。
+#   下列版本是依据计划书 §15.1 与各库兼容性区间**选定**的，
+#   但由于开发主机无法启动任何子进程（见 VERIFICATION.md 开头的说明），
+#   本文件从未经 pip 实际安装验证。
+#   请在目标机器上执行 `setup_env.ps1` 或 `pip install -r requirements.txt`，
+#   并把结果回填到 VERIFICATION.md 第 2 步。
+#
+#   若出现版本冲突，可先放宽为不固定版本：
+#       pip install Flask Flask-WTF Pillow numpy requests \
+#                   torch transformers pytest
+#   待跑通后再用 `pip freeze` 回填精确版本。
+#
+#   PyTorch 请按 CPU 版本单独安装，见 README 第 2 步
+#   （--index-url https://download.pytorch.org/whl/cpu）。
+#
+# 目标 Python：3.11 或 3.12（计划书建议 3.11）
+
+Flask==3.0.3
+Flask-WTF==1.2.1
+WTForms==3.1.2
+Pillow==10.4.0
+numpy==2.1.1
+requests==2.32.3
+
+# CLIP 推理（CPU）
+torch==2.4.1
+transformers==4.44.2
+huggingface-hub==0.24.6
+safetensors==0.4.5
+tokenizers==0.19.1
+
+# 测试
+pytest==8.3.2

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}The Little Postcard{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/little-prince-theme.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/little-prince-loader.css') }}">
+  {% block head_extra %}{% endblock %}
+</head>
+<body data-page="{{ request.endpoint or '' }}">
+  <div class="site-sky" aria-hidden="true">
+    <svg class="site-moon" viewBox="0 0 120 120" role="presentation">
+      <path d="M 76 19 C 52 24 37 45 40 68 C 43 89 62 103 83 101 C 65 92 53 76 53 56 C 53 38 62 25 76 19 Z" />
+    </svg>
+    <svg class="site-constellation" viewBox="0 0 360 210" role="presentation">
+      <g class="sky-constellation-lines">
+        <path d="M 22 162 L 78 126 L 124 142 L 178 92 L 238 116 L 302 68" />
+      </g>
+      <g class="sky-constellation-stars">
+        <circle cx="22" cy="162" r="2" />
+        <circle cx="78" cy="126" r="2.8" />
+        <circle cx="124" cy="142" r="1.7" />
+        <circle cx="178" cy="92" r="2.4" />
+        <circle cx="238" cy="116" r="1.6" />
+        <circle cx="302" cy="68" r="2.2" />
+      </g>
+    </svg>
+    <span class="site-star site-star--1">✶</span>
+    <span class="site-star site-star--2">✧</span>
+    <span class="site-star site-star--3">·</span>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="{{ url_for('index') }}">
+        <span class="brand-mark" aria-hidden="true">✶</span>
+        <span class="brand-copy">
+          <b>The Little Postcard</b>
+          <small>一封寄往星星的信</small>
+        </span>
+      </a>
+      <nav class="nav" aria-label="主导航">
+        <a href="{{ url_for('index') }}"{% if request.endpoint == 'index' %} aria-current="page"{% endif %}>寄一张</a>
+        <a href="{{ url_for('posts') }}"{% if request.endpoint == 'posts' %} aria-current="page"{% endif %}>星空</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flashes">
+          {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="footer-copy">
+        <span class="footer-star" aria-hidden="true">✶</span>
+        一张明信片，穿过星光，等待下一个抬头的人。
+      </p>
+      <p class="footer-note">for the one who still looks up</p>
+    </div>
+  </footer>
+
+  {% include "_little_prince_loader.html" %}
+
+  {% block scripts %}{% endblock %}
+  <script src="{{ url_for('static', filename='js/little-prince-loader.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/image-compress.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/site-loader.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/audio-continuity.js') }}" defer></script>
+</body>
+</html>

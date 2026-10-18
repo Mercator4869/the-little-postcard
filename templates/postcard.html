@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% block title %}一张留在星空的明信片 · The Little Postcard{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h1>一张留在星空的明信片</h1>
+  <p class="hint small">
+    由 {{ post['nickname'] or default_author }} 留在星空{% if posted_date %} · {{ posted_date }}{% endif %}
+  </p>
+
+  <div class="postcard-stage" data-postcard>
+    <div class="postcard" role="button" tabindex="0" aria-pressed="false"
+         style="--pc-ar: {{ card_aspect }}"
+         aria-label="一张留在星空的明信片，按回车或轻触翻面">
+      <div class="postcard__inner">
+        <span class="postcard__corner" data-corner="tl" aria-hidden="true"></span>
+        <span class="postcard__corner" data-corner="tr" aria-hidden="true"></span>
+        <span class="postcard__corner" data-corner="br" aria-hidden="true"></span>
+        <span class="postcard__corner" data-corner="bl" aria-hidden="true"></span>
+
+        <div class="postcard__face postcard__face--front">
+          <figure class="pc-front">
+            {% if image_available %}
+              <img src="{{ url_for('static', filename=post['upload_image_path']) }}"
+                   alt="这张明信片正面的照片">
+            {% else %}
+              <figcaption class="pc-front__fallback">这张照片已经飘远了</figcaption>
+            {% endif %}
+          </figure>
+        </div>
+
+        <div class="postcard__face postcard__face--back">
+          <div class="pc-back">
+            <div class="pc-back__left">
+              <blockquote class="pc-back__note"><span class="pc-back__note-body">{{ post['content'] }}</span></blockquote>
+              <p class="pc-back__sign">
+                — {{ post['nickname'] or default_author }}
+                {% if posted_date %}<span class="pc-back__date">{{ posted_date }}</span>{% endif %}
+              </p>
+            </div>
+
+            <span class="pc-back__divider" aria-hidden="true"></span>
+
+            <div class="pc-back__right">
+              <span class="pc-back__stamp" aria-hidden="true">♪</span>
+              <p class="pc-back__label">这张明信片带来的歌</p>
+              <p class="pc-back__song">{{ post['song_name'] }}</p>
+              {% if post['artist'] %}<p class="pc-back__artist">{{ post['artist'] }}</p>{% endif %}
+              <span class="pc-back__lines" aria-hidden="true">
+                <i></i><i></i><i></i>
+              </span>
+              <span class="pc-back__mark" aria-hidden="true">POST CARD</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <canvas class="postcard-fx" data-postcard-canvas aria-hidden="true"></canvas>
+  </div>
+
+  <p class="postcard-hint">轻触明信片，翻到它的背面</p>
+
+  <div class="result-details" data-result-details hidden>
+    <div class="song-block">
+      {% if image_available %}
+        <figure class="source-thumb">
+          <img src="{{ url_for('static', filename=post['upload_image_path']) }}"
+               alt="这张明信片正面的照片">
+          <figcaption>这张明信片正面的照片</figcaption>
+        </figure>
+      {% endif %}
+      <div class="song-meta">
+        <h2 class="song-name">{{ post['song_name'] }}</h2>
+        {% if post['artist'] %}<p class="artist">{{ post['artist'] }}</p>{% endif %}
+      </div>
+    </div>
+
+    <div class="audio-block">
+      {% if audio_available %}
+        <audio id="player" controls preload="auto"
+               data-song-id="{{ post['song_id'] }}"
+               src="{{ url_for('static', filename=audio_relative) }}">
+          当前浏览器不支持音频播放。
+        </audio>
+        <p class="hint small" id="audio-hint" hidden>
+          浏览器阻止了自动播放，请点一下明信片或上面的播放键。
+        </p>
+      {% else %}
+        <p class="hint">这首歌暂时没有本地音频。</p>
+      {% endif %}
+    </div>
+
+    <p class="actions">
+      <a class="btn btn-primary btn-small"
+         href="{{ url_for('song_detail', song_id=post['song_id']) }}">走进这首歌的星群 →</a>
+    </p>
+
+    {% if note_id %}
+      {% set like_url = url_for('like_note', image_id=note_id) %}
+      {% set reply_url = url_for('reply_note', image_id=note_id) %}
+      {% set reply_next = url_for('note_postcard', image_id=note_id) %}
+    {% elif card_post_id %}
+      {% set like_url = url_for('like_postcard', post_id=card_post_id) %}
+      {% set reply_url = url_for('reply_postcard', post_id=card_post_id) %}
+      {% set reply_next = url_for('postcard', post_id=card_post_id) %}
+    {% endif %}
+    {% if note_id or card_post_id %}
+      <div class="postcard-interactions">
+        <p class="postcard-interactions__title">把共鸣与回信，留在这张明信片</p>
+
+        <div class="note-actions">
+          <form method="post" class="like-form" action="{{ like_url }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            {% if liked %}
+              <button class="like-btn liked" type="submit"
+                      aria-pressed="true"
+                      title="再点一次取消共鸣">♥ 已共鸣 · {{ likes }}</button>
+            {% else %}
+              <button class="like-btn" type="submit"
+                      aria-pressed="false"
+                      title="点一下，把共鸣留在星群里">♥ 共鸣之心 · {{ likes }}</button>
+            {% endif %}
+          </form>
+        </div>
+
+        {% if replies %}
+          <div class="note-replies">
+            {% for reply in replies %}
+              <p class="note-reply">
+                <span class="nickname">{{ reply['nickname'] }}</span>
+                <span class="time">{{ reply['created_at'] }}</span>
+                <span class="reply-text">{{ reply['content'] }}</span>
+              </p>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <form method="post" class="reply-form" action="{{ reply_url }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="next" value="{{ reply_next }}">
+          <textarea name="content" rows="2" maxlength="500" required
+                    placeholder="{{ compose_placeholder }}"></textarea>
+          <button type="submit" class="btn btn-primary btn-small">回信</button>
+        </form>
+      </div>
+    {% endif %}
+  </div>
+
+  <p class="actions">
+    <a class="link" href="{{ url_for('posts') }}">← 回到明信片的星空</a>
+    <a class="link" href="{{ url_for('index') }}">再寄一张 →</a>
+  </p>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/postcard.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/song.js') }}" defer></script>
+{% endblock %}

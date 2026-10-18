@@ -1,0 +1,532 @@
+<div class="lp-loader" id="lpLoader" role="dialog" aria-modal="true"
+     aria-label="明信片正在飞向它的歌" aria-hidden="true">
+
+
+    <!-- ── paper & marginalia ────────────────────────────── -->
+    <div class="lp-paper" aria-hidden="true"></div>
+    <svg class="lp-still-stars" id="lp-stillStars" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
+    <div class="lp-paper-grain" aria-hidden="true"></div>
+
+    <header class="lp-page-head">
+      <div class="lp-brand">
+        <span class="lp-brand-star" aria-hidden="true">✶</span>
+        <div class="lp-brand-text">
+          <b>The Little Postcard</b>
+          <small>一封寄往星星的信</small>
+        </div>
+      </div>
+      <div class="lp-head-note">
+        <span>N° 07</span>
+        <i aria-hidden="true"></i>
+        <span>AIR MAIL · TO THE STARS</span>
+      </div>
+    </header>
+
+    <aside class="lp-margin-note" aria-hidden="true">
+      <span class="lp-margin-rule"></span>
+      <p>如果夜里有风<br />那是我在替你赶路</p>
+      <span class="lp-margin-star">✶</span>
+    </aside>
+
+    <!-- ── the wide, quiet sky ───────────────────────────── -->
+    <div class="lp-sky">
+      <svg class="lp-night-wash" viewBox="0 0 1200 760" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <radialGradient id="lp-wash-blue" cx="48%" cy="46%" r="58%">
+            <stop offset="0" stop-color="#173c72" stop-opacity="0.94" />
+            <stop offset="0.52" stop-color="#102e5d" stop-opacity="0.9" />
+            <stop offset="0.82" stop-color="#0b2145" stop-opacity="0.74" />
+            <stop offset="1" stop-color="#071a31" stop-opacity="0" />
+          </radialGradient>
+          <radialGradient id="lp-wash-rose" cx="50%" cy="50%" r="50%">
+            <stop offset="0" stop-color="#e6c6bb" stop-opacity="0.34" />
+            <stop offset="0.65" stop-color="#d9b5ae" stop-opacity="0.14" />
+            <stop offset="1" stop-color="#d9b5ae" stop-opacity="0" />
+          </radialGradient>
+          <radialGradient id="lp-wash-gold" cx="50%" cy="50%" r="50%">
+            <stop offset="0" stop-color="#ead8ae" stop-opacity="0.42" />
+            <stop offset="0.68" stop-color="#dfc99a" stop-opacity="0.15" />
+            <stop offset="1" stop-color="#dfc99a" stop-opacity="0" />
+          </radialGradient>
+          <radialGradient id="lp-wash-teal" cx="50%" cy="50%" r="50%">
+            <stop offset="0" stop-color="#b9d6d5" stop-opacity="0.28" />
+            <stop offset="0.65" stop-color="#a9c9c8" stop-opacity="0.1" />
+            <stop offset="1" stop-color="#a9c9c8" stop-opacity="0" />
+          </radialGradient>
+          <filter id="lp-wash-bleed" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="3" seed="24" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="42" xChannelSelector="R" yChannelSelector="G" result="bleed" />
+            <feGaussianBlur in="bleed" stdDeviation="4.2" />
+          </filter>
+          <filter id="lp-edge-soft" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" />
+          </filter>
+        </defs>
+
+        <path d="M 120 172
+          C 196 90 332 88 438 128
+          C 528 58 680 58 766 108
+          C 872 42 1018 78 1078 166
+          C 1158 232 1152 332 1102 392
+          C 1172 470 1128 574 1040 614
+          C 978 712 824 720 722 676
+          C 632 742 484 738 402 680
+          C 312 718 194 678 156 606
+          C 68 558 56 440 116 366
+          C 52 276 74 204 120 172 Z"
+          fill="url(#lp-wash-blue)" stroke="#0c2242" stroke-opacity="0.24" stroke-width="3" filter="url(#lp-wash-bleed)" />
+
+        <ellipse cx="242" cy="218" rx="240" ry="154" fill="url(#lp-wash-rose)" filter="url(#lp-wash-bleed)" opacity="0.36" />
+        <ellipse cx="980" cy="208" rx="245" ry="160" fill="url(#lp-wash-gold)" filter="url(#lp-wash-bleed)" opacity="0.5" />
+        <ellipse cx="862" cy="618" rx="292" ry="136" fill="url(#lp-wash-teal)" filter="url(#lp-wash-bleed)" opacity="0.45" />
+        <ellipse cx="430" cy="616" rx="238" ry="112" fill="url(#lp-wash-gold)" filter="url(#lp-wash-bleed)" opacity="0.34" />
+        <ellipse cx="598" cy="208" rx="375" ry="205" fill="#0c2242" opacity="0.34" filter="url(#lp-wash-bleed)" />
+        <ellipse cx="446" cy="526" rx="290" ry="150" fill="#0a1d37" opacity="0.24" filter="url(#lp-wash-bleed)" />
+        <ellipse cx="1018" cy="472" rx="190" ry="130" fill="#1d3455" opacity="0.2" filter="url(#lp-wash-bleed)" />
+        <ellipse cx="404" cy="334" rx="260" ry="150" fill="#315b87" opacity="0.16" filter="url(#lp-wash-bleed)" />
+        <ellipse cx="778" cy="510" rx="230" ry="120" fill="#1a3b61" opacity="0.16" filter="url(#lp-wash-bleed)" />
+
+        <g fill="none" stroke="#b7c9dd" stroke-linecap="round" opacity="0.25" filter="url(#lp-edge-soft)">
+          <path d="M 128 196 C 226 142 324 158 408 196" stroke-width="1.4" />
+          <path d="M 990 102 C 1052 138 1082 186 1084 230" stroke-width="1.1" />
+          <path d="M 208 612 C 314 574 390 580 478 616" stroke-width="1.2" />
+          <path d="M 152 376 C 208 348 252 356 294 384" stroke-width="0.9" />
+          <path d="M 942 538 C 990 512 1030 516 1064 540" stroke-width="1" />
+        </g>
+
+        <g fill="#d8c79f" opacity="0.55">
+          <circle cx="296" cy="154" r="1.4" />
+          <circle cx="343" cy="192" r="0.9" />
+          <circle cx="892" cy="142" r="1.2" />
+          <circle cx="1046" cy="328" r="1" />
+          <circle cx="878" cy="590" r="1.1" />
+          <circle cx="368" cy="600" r="1.3" />
+        </g>
+
+        <g class="lp-ink-stars" fill="none" stroke="#f0dfb0" stroke-linecap="round" opacity="0.82">
+          <g transform="translate(412 126) scale(1.15)">
+            <path d="M 0 -7 L 1.6 -1.8 L 7 0 L 1.6 1.8 L 0 7 L -1.6 1.8 L -7 0 L -1.6 -1.8 Z" stroke-width="0.8" />
+          </g>
+          <g transform="translate(788 112) scale(0.8)">
+            <path d="M 0 -6 L 1.4 -1.5 L 6 0 L 1.4 1.5 L 0 6 L -1.4 1.5 L -6 0 L -1.4 -1.5 Z" stroke-width="0.8" />
+          </g>
+          <g transform="translate(948 278) scale(0.62)">
+            <path d="M 0 -6 L 1.4 -1.5 L 6 0 L 1.4 1.5 L 0 6 L -1.4 1.5 L -6 0 L -1.4 -1.5 Z" stroke-width="0.9" />
+          </g>
+          <g transform="translate(334 430) scale(0.72)">
+            <path d="M 0 -7 L 1.7 -2 L 7 0 L 1.7 2 L 0 7 L -1.7 2 L -7 0 L -1.7 -2 Z" stroke-width="0.8" />
+          </g>
+          <g transform="translate(690 474) scale(0.55)">
+            <path d="M 0 -6 L 1.4 -1.5 L 6 0 L 1.4 1.5 L 0 6 L -1.4 1.5 L -6 0 L -1.4 -1.5 Z" stroke-width="0.9" />
+          </g>
+          <path d="M 842 168 C 814 182 796 196 780 214" stroke-width="1" opacity="0.7" />
+          <path d="M 842 168 C 834 176 830 184 828 191" stroke-width="1.6" opacity="0.42" />
+          <g transform="translate(842 168)" stroke="#f8e5a9" stroke-width="0.8" opacity="0.9">
+            <path d="M 0 -3.2 L 0.9 -0.9 L 3.2 0 L 0.9 0.9 L 0 3.2 L -0.9 0.9 L -3.2 0 L -0.9 -0.9 Z" />
+          </g>
+          <path d="M 326 512 C 309 529 295 542 281 556" stroke-width="0.85" opacity="0.48" />
+          <g transform="translate(326 512)" stroke="#efdba7" stroke-width="0.75" opacity="0.72">
+            <path d="M 0 -2.7 L 0.8 -0.8 L 2.7 0 L 0.8 0.8 L 0 2.7 L -0.8 0.8 L -2.7 0 L -0.8 -0.8 Z" />
+          </g>
+          <path d="M 716 154 C 694 178 670 201 644 220" stroke-width="1.1" opacity="0.52" />
+          <path d="M 716 154 C 706 163 699 172 694 181" stroke-width="1.7" opacity="0.26" />
+          <g transform="translate(716 154)" stroke="#f8e6ab" stroke-width="0.85" opacity="0.8">
+            <path d="M 0 -3.6 L 1 -1 L 3.6 0 L 1 1 L 0 3.6 L -1 1 L -3.6 0 L -1 -1 Z" />
+          </g>
+          <path d="M 956 476 C 942 493 928 508 912 520" stroke-width="0.8" opacity="0.36" />
+        </g>
+
+        <g fill="#e9d9b0" opacity="0.58">
+          <circle cx="556" cy="102" r="1" />
+          <circle cx="638" cy="146" r="0.8" />
+          <circle cx="282" cy="322" r="1.1" />
+          <circle cx="1016" cy="404" r="0.9" />
+          <circle cx="544" cy="452" r="1.2" />
+          <circle cx="470" cy="504" r="0.8" />
+          <circle cx="762" cy="548" r="1" />
+          <circle cx="388" cy="228" r="0.7" />
+        </g>
+
+        <g fill="#d8e4f3" opacity="0.28">
+          <circle cx="142" cy="240" r="3.2" />
+          <circle cx="128" cy="274" r="1.6" />
+          <circle cx="162" cy="304" r="2.2" />
+          <circle cx="1096" cy="252" r="2.6" />
+          <circle cx="1116" cy="302" r="1.4" />
+          <circle cx="1042" cy="612" r="2.8" />
+          <circle cx="996" cy="658" r="1.8" />
+          <circle cx="322" cy="588" r="2.2" />
+        </g>
+      </svg>
+
+      <canvas class="lp-starfall" id="lp-starfall" aria-hidden="true"></canvas>
+
+      <svg class="lp-moon" viewBox="0 0 160 160" aria-hidden="true">
+        <path d="M 98 23
+          C 72 32 53 55 51 82
+          C 49 110 67 134 93 139
+          C 117 143 138 128 144 106
+          C 123 118 98 110 86 91
+          C 75 73 80 48 98 23 Z"
+          fill="#f1dfb6" opacity="0.78" />
+        <path d="M 98 23
+          C 72 32 53 55 51 82
+          C 49 110 67 134 93 139
+          C 117 143 138 128 144 106
+          C 123 118 98 110 86 91
+          C 75 73 80 48 98 23 Z"
+          fill="none" stroke="#f0dfb4" stroke-width="1.1" stroke-linecap="round" opacity="0.62" />
+        <path d="M 112 48 l 1.6 6 6 1.6 -6 1.7 -1.6 6 -1.7 -6 -6 -1.7 6 -1.6 Z" fill="#c2a269" opacity="0.5" />
+        <path d="M 135 78 l 1 3.6 3.6 1 -3.6 1.1 -1 3.6 -1.1 -3.6 -3.6 -1.1 3.6 -1 Z" fill="#c2a269" opacity="0.38" />
+        <path d="M 43 111 C 36 115 30 116 24 114" fill="none" stroke="#7d8ca3" stroke-width="0.9" opacity="0.35" stroke-linecap="round" />
+      </svg>
+
+      <svg class="lp-small-planet" viewBox="0 0 220 220" aria-hidden="true">
+        <path d="M 36 126
+          C 40 89 65 62 101 58
+          C 140 54 172 78 178 116
+          C 184 154 157 186 117 190
+          C 78 194 44 168 36 126 Z"
+          fill="#e8d4ae" opacity="0.72" />
+        <path d="M 36 126
+          C 40 89 65 62 101 58
+          C 140 54 172 78 178 116
+          C 184 154 157 186 117 190
+          C 78 194 44 168 36 126 Z"
+          fill="none" stroke="#eadbb8" stroke-width="1.2" stroke-linecap="round" opacity="0.72" />
+        <path d="M 53 151 C 81 170 122 176 160 157" fill="none" stroke="#ead39b" stroke-width="1" opacity="0.55" stroke-linecap="round" />
+        <path d="M 66 82 C 87 72 118 71 145 84" fill="none" stroke="#d5e0ec" stroke-width="0.9" opacity="0.45" stroke-linecap="round" />
+
+        <g stroke="#f0e2c4" stroke-width="1.05" fill="none" stroke-linecap="round" opacity="0.9">
+          <circle cx="106" cy="66" r="7" fill="#f7ecd4" />
+          <path d="M 106 73 C 103 79 103 84 104 92" />
+          <path d="M 105 78 C 99 81 93 85 89 91" />
+          <path d="M 105 79 C 113 83 118 89 120 95" />
+          <path d="M 104 92 C 99 98 96 104 95 110" />
+          <path d="M 104 92 C 108 98 112 104 114 110" />
+          <path d="M 107 77 C 118 72 130 73 141 79" stroke="#f1be83" stroke-width="2" opacity="0.8" />
+          <path d="M 108 81 C 120 79 132 81 143 86" stroke="#f1d39a" stroke-width="1" opacity="0.6" />
+        </g>
+        <ellipse cx="169" cy="106" rx="10" ry="7" fill="#e4b3a9" opacity="0.34" />
+        <g stroke="#e9d7b5" stroke-width="0.9" fill="none" stroke-linecap="round" opacity="0.72">
+          <path d="M 164 117 C 166 105 164 96 160 87" />
+          <path d="M 160 87 C 154 89 150 94 153 99 C 156 104 162 102 164 97" />
+          <path d="M 151 91 C 146 87 140 87 137 92 C 135 97 140 101 146 98" />
+          <path d="M 158 83 C 157 79 160 76 164 77" />
+        </g>
+        <g fill="#e7d3a5" opacity="0.66">
+          <circle cx="61" cy="75" r="1.4" />
+          <circle cx="188" cy="82" r="1.1" />
+          <circle cx="46" cy="146" r="1" />
+          <circle cx="154" cy="178" r="1.3" />
+        </g>
+        <path d="M 195 43 l 1.2 4 4 1.2 -4 1.2 -1.2 4 -1.2 -4 -4 -1.2 4 -1.2 Z" fill="#f2d694" opacity="0.66" />
+      </svg>
+
+      <div class="lp-constellation" aria-hidden="true">
+        <svg viewBox="0 0 250 120">
+          <path d="M 20 72 L 72 38 L 122 58 L 176 26 L 224 48" fill="none" stroke="#d9caa6" stroke-width="0.7" stroke-dasharray="2 6" opacity="0.45" />
+          <g fill="#e5d3a7" opacity="0.6">
+            <circle cx="20" cy="72" r="2" />
+            <circle cx="72" cy="38" r="1.5" />
+            <circle cx="122" cy="58" r="2.4" />
+            <circle cx="176" cy="26" r="1.4" />
+            <circle cx="224" cy="48" r="2" />
+          </g>
+        </svg>
+      </div>
+
+      <div class="lp-star-dust" aria-hidden="true">
+        <span class="lp-dust lp-dust--1"></span>
+        <span class="lp-dust lp-dust--2"></span>
+        <span class="lp-dust lp-dust--3"></span>
+        <span class="lp-dust lp-dust--4"></span>
+        <span class="lp-dust lp-dust--5"></span>
+        <span class="lp-dust lp-dust--6"></span>
+        <span class="lp-page-star lp-page-star--1" aria-hidden="true">✶</span>
+        <span class="lp-page-star lp-page-star--2" aria-hidden="true">✶</span>
+        <span class="lp-page-star lp-page-star--3" aria-hidden="true">✶</span>
+        <span class="lp-page-star lp-page-star--4" aria-hidden="true">✶</span>
+      </div>
+
+      <!-- ── the postcard in flight ───────────────────────── -->
+      <div class="lp-scene" id="lp-scene">
+        <div class="lp-flight-holder">
+        <div class="lp-flight" id="lp-flight">
+          <svg class="lp-wings" viewBox="0 0 900 520" aria-hidden="true">
+            <defs>
+              <filter id="lp-pencil-wobble" x="-20%" y="-20%" width="140%" height="140%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.012 0.022" numOctaves="2" seed="9" result="noise" />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="4.4" xChannelSelector="R" yChannelSelector="G" />
+              </filter>
+              <filter id="lp-wash-soft" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="2.6" />
+              </filter>
+              <g id="lp-feather">
+                <path class="lp-feather-fill" d="M 0 0 C -42 -20 -140 -38 -288 -20 C -218 15 -86 32 0 0 Z" />
+                <path class="lp-feather-ink" d="M 0 0 C -42 -20 -140 -38 -288 -20 C -218 15 -86 32 0 0 Z" />
+                <path class="lp-feather-line" d="M -12 -3 C -83 -19 -176 -26 -263 -17" />
+                <path class="lp-feather-line" d="M -32 7 C -111 17 -181 19 -231 6" />
+                <path class="lp-feather-line" d="M -58 12 C -115 17 -158 17 -191 10" />
+                <path class="lp-feather-scribble" d="M -270 -19 C -300 -26 -319 -29 -335 -23" />
+                <path class="lp-feather-scribble" d="M -238 8 C -264 14 -286 15 -304 11" />
+                <path class="lp-feather-scribble" d="M -48 -8 C -84 -13 -118 -14 -145 -10" />
+                <path class="lp-feather-scribble" d="M -58 18 C -92 20 -124 17 -148 10" />
+                <path class="lp-feather-scribble" d="M -96 -4 C -119 -1 -143 3 -164 9" />
+              </g>
+            </defs>
+
+            <g class="lp-wing lp-wing--left">
+              <g class="lp-wing-inner">
+                <path class="lp-wing-wash" d="M 336 296
+                  C 292 244 232 156 154 101
+                  C 108 69 64 55 45 78
+                  C 26 101 50 128 84 138
+                  C 64 157 68 188 95 203
+                  C 120 217 157 206 181 190
+                  C 170 217 189 238 218 238
+                  C 244 238 267 220 280 200
+                  C 292 231 315 265 341 283 Z"
+                  fill="#b8cadc" opacity="0.28" filter="url(#lp-wash-soft)" />
+                <g filter="url(#lp-pencil-wobble)" class="lp-feathers">
+                  <use href="#lp-feather" transform="translate(326 312) rotate(-10) scale(0.58)" opacity="0.66" />
+                  <use href="#lp-feather" transform="translate(333 304) rotate(0) scale(0.72)" opacity="0.72" />
+                  <use href="#lp-feather" transform="translate(338 292) rotate(10) scale(0.86)" opacity="0.8" />
+                  <use href="#lp-feather" transform="translate(340 278) rotate(20) scale(0.96)" opacity="0.86" />
+                  <use href="#lp-feather" transform="translate(336 264) rotate(30) scale(1.02)" opacity="0.9" />
+                  <use href="#lp-feather" transform="translate(330 250) rotate(40) scale(1.03)" opacity="0.84" />
+                </g>
+                <g class="lp-wing-sketches" fill="none" stroke-linecap="round">
+                  <path d="M 330 248 C 287 207 238 162 190 130" />
+                  <path d="M 333 257 C 288 220 250 190 216 166" />
+                  <path d="M 326 310 C 297 300 269 286 250 269" />
+                  <path d="M 198 112 C 174 98 151 89 130 87" />
+                  <path d="M 74 111 C 92 113 108 119 120 128" />
+                  <path d="M 184 152 C 158 141 138 134 118 132" />
+                  <path d="M 238 227 C 222 217 206 211 190 209" />
+                  <path d="M 290 286 C 275 297 260 306 246 311" />
+                </g>
+                <g class="lp-wing-stars" fill="#6b7991" opacity="0.5">
+                  <circle cx="208" cy="84" r="1.3" />
+                  <circle cx="104" cy="165" r="1" />
+                  <circle cx="257" cy="243" r="0.9" />
+                </g>
+              </g>
+            </g>
+
+            <g class="lp-wing lp-wing--right" transform="translate(900 0) scale(-1 1)">
+              <g class="lp-wing-inner">
+                <path class="lp-wing-wash" d="M 336 296
+                  C 292 244 232 156 154 101
+                  C 108 69 64 55 45 78
+                  C 26 101 50 128 84 138
+                  C 64 157 68 188 95 203
+                  C 120 217 157 206 181 190
+                  C 170 217 189 238 218 238
+                  C 244 238 267 220 280 200
+                  C 292 231 315 265 341 283 Z"
+                  fill="#e7d5c7" opacity="0.22" filter="url(#lp-wash-soft)" />
+                <g filter="url(#lp-pencil-wobble)" class="lp-feathers">
+                  <use href="#lp-feather" transform="translate(326 312) rotate(-10) scale(0.58)" opacity="0.62" />
+                  <use href="#lp-feather" transform="translate(333 304) rotate(0) scale(0.72)" opacity="0.7" />
+                  <use href="#lp-feather" transform="translate(338 292) rotate(10) scale(0.86)" opacity="0.78" />
+                  <use href="#lp-feather" transform="translate(340 278) rotate(20) scale(0.96)" opacity="0.84" />
+                  <use href="#lp-feather" transform="translate(336 264) rotate(30) scale(1.02)" opacity="0.88" />
+                  <use href="#lp-feather" transform="translate(330 250) rotate(40) scale(1.03)" opacity="0.82" />
+                </g>
+                <g class="lp-wing-sketches" fill="none" stroke-linecap="round">
+                  <path d="M 330 248 C 287 207 238 162 190 130" />
+                  <path d="M 333 257 C 288 220 250 190 216 166" />
+                  <path d="M 326 310 C 297 300 269 286 250 269" />
+                  <path d="M 198 112 C 174 98 151 89 130 87" />
+                  <path d="M 74 111 C 92 113 108 119 120 128" />
+                  <path d="M 184 152 C 158 141 138 134 118 132" />
+                  <path d="M 238 227 C 222 217 206 211 190 209" />
+                  <path d="M 290 286 C 275 297 260 306 246 311" />
+                </g>
+                <g class="lp-wing-stars" fill="#6b7991" opacity="0.45">
+                  <circle cx="208" cy="84" r="1.2" />
+                  <circle cx="104" cy="165" r="0.9" />
+                </g>
+              </g>
+            </g>
+          </svg>
+
+          <article class="lp-postcard" id="lp-postcard" aria-label="一张长着翅膀的明信片">
+            <svg class="lp-card-outline" viewBox="0 0 380 258" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M 7 9
+                C 98 4 286 6 372 8
+                C 375 80 374 178 371 250
+                C 278 254 102 253 8 251
+                C 4 177 5 77 7 9 Z" />
+              <path class="lp-card-outline-pencil" d="M 3 12 C 104 8 296 9 376 12" />
+            </svg>
+
+            <div class="lp-card-face">
+              <div class="lp-card-wash" aria-hidden="true"></div>
+
+              <div class="lp-card-left">
+                <div class="lp-card-head">
+                  <span>POST CARD</span>
+                  <i aria-hidden="true">✶</i>
+                </div>
+
+                <p class="lp-card-salutation">给抬头看星星的人：</p>
+
+                <div class="lp-card-note">
+                  <p>夜里，有一颗星</p>
+                  <p>走得特别快。</p>
+                  <p>那是我寄给你的信。</p>
+                </div>
+
+                <p class="lp-card-sign">— 星星邮差</p>
+
+                <svg class="lp-card-doodle" viewBox="0 0 120 72" aria-hidden="true">
+                  <path d="M 16 58 C 17 42 30 31 46 31 C 62 31 73 43 72 57 C 71 66 62 69 52 67" fill="none" stroke="#6d778a" stroke-width="0.9" stroke-linecap="round" />
+                  <path d="M 28 62 C 40 68 55 67 66 60" fill="none" stroke="#a58b62" stroke-width="0.8" stroke-linecap="round" opacity="0.6" />
+                  <path d="M 82 30 l 1.3 4.6 4.6 1.3 -4.6 1.3 -1.3 4.6 -1.3 -4.6 -4.6 -1.3 4.6 -1.3 Z" fill="#ad9366" opacity="0.55" />
+                  <path d="M 96 48 l 1 3.3 3.3 1 -3.3 1 -1 3.3 -1 -3.3 -3.3 -1 3.3 -1 Z" fill="#8c99ad" opacity="0.5" />
+                  <path d="M 44 18 C 48 12 53 13 56 18" fill="none" stroke="#7d8aa0" stroke-width="0.8" stroke-linecap="round" opacity="0.45" />
+                </svg>
+              </div>
+
+              <div class="lp-card-fold" aria-hidden="true"></div>
+
+              <div class="lp-card-right">
+                <div class="lp-stamp">
+                  <svg viewBox="0 0 70 88" aria-hidden="true">
+                    <path d="M 4 7 C 22 4 48 5 66 7 C 67 28 67 60 66 81 C 46 84 23 84 4 81 C 3 59 3 29 4 7 Z" fill="#fbf6e8" />
+                    <path d="M 6 9 C 23 7 47 7 64 9 C 63 28 64 50 63 66 C 48 60 33 58 22 64 C 14 68 9 66 6 62 C 5 45 5 25 6 9 Z" fill="#cbd9e6" opacity="0.62" />
+                    <path d="M 6 9 C 23 7 47 7 64 9 C 63 28 64 50 63 66 C 48 60 33 58 22 64 C 14 68 9 66 6 62 C 5 45 5 25 6 9 Z" fill="none" stroke="#6d798b" stroke-width="0.7" opacity="0.38" />
+                    <path d="M 6 62 C 18 58 24 65 31 60 C 42 52 53 55 64 48 L 64 81 C 44 84 22 84 4 81 Z" fill="#e5d4b8" opacity="0.6" />
+                    <path d="M 8 64 C 22 60 36 63 49 55 C 56 51 61 51 64 53" fill="none" stroke="#7b8596" stroke-width="0.7" opacity="0.45" />
+                    <g stroke="#607086" stroke-width="0.8" fill="none" stroke-linecap="round" opacity="0.75">
+                      <path d="M 49 20 l 1 3.2 3.2 1 -3.2 1 -1 3.2 -1 -3.2 -3.2 -1 3.2 -1 Z" fill="#e7d2a1" stroke="none" />
+                      <path d="M 18 18 l 1 3 3 1 -3 1 -1 3 -1 -3 -3 -1 3 -1 Z" fill="#e7d2a1" stroke="none" />
+                      <circle cx="35" cy="23" r="0.7" fill="#6f7d90" stroke="none" />
+                      <circle cx="58" cy="35" r="0.6" fill="#6f7d90" stroke="none" />
+                    </g>
+                    <g stroke="#6d665b" stroke-width="0.8" fill="none" stroke-linecap="round" opacity="0.66">
+                      <path d="M 21 66 C 21 59 22 53 24 47" />
+                      <path d="M 24 51 C 19 47 16 48 15 52 C 14 56 19 59 23 55" fill="#d8a8a0" fill-opacity="0.34" />
+                      <path d="M 24 49 C 28 44 33 45 33 49 C 33 53 28 55 24 51" fill="#d8a8a0" fill-opacity="0.28" />
+                      <path d="M 23 47 C 26 42 30 41 31 44 C 32 48 28 49 25 46" fill="#d8a8a0" fill-opacity="0.24" />
+                    </g>
+                    <path d="M 4 7 C 22 4 48 5 66 7 C 67 28 67 60 66 81 C 46 84 23 84 4 81 C 3 59 3 29 4 7 Z" fill="none" stroke="#69758a" stroke-width="0.9" stroke-dasharray="2 3" opacity="0.72" />
+                    <text x="53" y="76" text-anchor="middle" font-family="'Caveat', cursive" font-size="6.6" fill="#6c778b" letter-spacing="0.8">POSTE</text>
+                  </svg>
+                </div>
+
+                <div class="lp-postmark" aria-hidden="true">
+                  <span class="lp-postmark-ring"></span>
+                  <span class="lp-postmark-text">星辰邮局<br /><em>N° 07</em></span>
+                  <span class="lp-postmark-lines"></span>
+                </div>
+
+                <p class="lp-ps-note" aria-hidden="true">P.S. 别忘了抬头。</p>
+
+                <div class="lp-address" aria-hidden="true">
+                  <span class="lp-address-label">TO / 抬头看星星的人</span>
+                  <span class="lp-address-line"></span>
+                  <span class="lp-address-line"></span>
+                </div>
+
+                <p class="lp-edition">AIR MAIL · N° 07</p>
+              </div>
+            </div>
+          </article>
+
+          <svg class="lp-wind-art" viewBox="0 0 900 520" aria-hidden="true">
+            <defs>
+              <filter id="lp-wind-wobble" x="-20%" y="-30%" width="140%" height="160%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.014 0.05" numOctaves="2" seed="6" result="n" />
+                <feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G" />
+              </filter>
+            </defs>
+            <g filter="url(#lp-wind-wobble)" fill="none" stroke-linecap="round">
+              <path d="M 138 342 C 186 318 226 338 266 321 C 285 313 300 315 313 323"
+                stroke="#b9cadb" stroke-width="12" opacity="0.18" />
+              <path d="M 138 342 C 186 318 226 338 266 321 C 285 313 300 315 313 323"
+                stroke="#657a94" stroke-width="1" opacity="0.42" />
+              <path d="M 648 262 C 708 284 722 316 680 338 C 650 354 626 341 638 326"
+                stroke="#b8c8d8" stroke-width="11" opacity="0.16" />
+              <path d="M 648 262 C 708 284 722 316 680 338 C 650 354 626 341 638 326"
+                stroke="#657a94" stroke-width="1" opacity="0.44" />
+              <path d="M 252 452 C 334 424 420 442 502 420 C 554 407 592 414 624 432"
+                stroke="#b7c8d7" stroke-width="15" opacity="0.14" />
+              <path d="M 252 452 C 334 424 420 442 502 420 C 554 407 592 414 624 432"
+                stroke="#7c8da1" stroke-width="0.9" opacity="0.34" />
+              <path d="M 238 185 C 166 202 159 242 213 249 C 240 252 251 241 242 230"
+                stroke="#c9d7e6" stroke-width="1" opacity="0.5" />
+              <path d="M 267 174 C 206 188 194 214 208 231"
+                stroke="#8b9bb0" stroke-width="0.8" opacity="0.3" stroke-dasharray="2 6" />
+              <path d="M 663 278 C 735 288 745 332 687 342 C 659 347 646 334 658 322"
+                stroke="#c9d7e6" stroke-width="1" opacity="0.5" />
+              <path d="M 606 295 C 662 300 681 319 679 334"
+                stroke="#e4c787" stroke-width="0.8" opacity="0.32" stroke-dasharray="1.5 5" />
+              <path d="M 304 406 C 376 386 453 398 522 378 C 555 368 583 369 604 382"
+                stroke="#cfdbe8" stroke-width="1" opacity="0.42" />
+              <path d="M 270 448 C 356 428 438 440 516 418 C 558 407 594 414 624 428"
+                stroke="#b9cbdc" stroke-width="0.8" opacity="0.25" />
+              <path d="M 660 446 C 704 436 744 445 782 461"
+                stroke="#e0c483" stroke-width="0.7" opacity="0.2" stroke-dasharray="1 6" />
+              <path d="M 407 127 C 476 105 545 118 606 102 C 642 93 670 96 692 108"
+                stroke="#8b9bb0" stroke-width="0.8" opacity="0.26" stroke-dasharray="1 7" />
+            </g>
+            <g fill="#d6e2ee" opacity="0.55">
+              <circle cx="254" cy="229" r="1.2" />
+              <circle cx="678" cy="327" r="1" />
+              <circle cx="519" cy="380" r="1.1" />
+              <circle cx="612" cy="101" r="0.9" />
+              <circle cx="286" cy="318" r="0.9" />
+              <circle cx="670" cy="334" r="0.8" />
+              <circle cx="500" cy="421" r="1" />
+            </g>
+            <g fill="none" stroke="#c7d6e5" stroke-width="0.7" stroke-linecap="round" opacity="0.38">
+              <path d="M 212 172 C 200 184 196 199 202 212" />
+              <path d="M 231 167 C 219 179 216 193 220 204" />
+              <path d="M 702 196 C 710 208 712 223 706 234" />
+              <path d="M 545 430 C 536 441 536 452 542 461" />
+            </g>
+          </svg>
+
+          <div class="lp-wind" aria-hidden="true">
+            <span class="lp-wind-line lp-wind-line--1"></span>
+            <span class="lp-wind-line lp-wind-line--2"></span>
+            <span class="lp-wind-line lp-wind-line--3"></span>
+            <span class="lp-wind-line lp-wind-line--4"></span>
+          </div>
+
+          <span class="lp-loose-feather lp-loose-feather--1" aria-hidden="true"></span>
+          <span class="lp-loose-feather lp-loose-feather--2" aria-hidden="true"></span>
+          <span class="lp-loose-feather lp-loose-feather--3" aria-hidden="true"></span>
+        </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="lp-hud">
+      <p class="lp-hud-copy" id="lp-hudCopy" aria-live="polite">正在把这张明信片，寄往属于它的歌里</p>
+
+      <div class="lp-progress" id="lp-progress" role="progressbar" aria-label="明信片飞行进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="84">
+        <div class="lp-progress-meta">
+          <span class="lp-progress-status" id="lp-status">正在穿过最后一片星星</span>
+          <span class="lp-progress-count"><b id="lp-percent">84</b><i>%</i></span>
+        </div>
+        <svg class="lp-progress-line" viewBox="0 0 360 16" preserveAspectRatio="none" aria-hidden="true">
+          <path class="lp-progress-track" d="M 3 9 C 53 6 87 11 132 8 C 178 5 208 10 250 7 C 292 4 326 9 357 7" />
+          <path class="lp-progress-fill" id="lp-progressFill" d="M 3 9 C 53 6 87 11 132 8 C 178 5 208 10 250 7 C 292 4 326 9 357 7" />
+          <g class="lp-progress-star" id="lp-progressStar">
+            <path d="M 0 -5 L 1.5 -1.5 L 5 0 L 1.5 1.5 L 0 5 L -1.5 1.5 L -5 0 L -1.5 -1.5 Z" />
+          </g>
+        </svg>
+      </div>
+
+      <p class="lp-hud-sub">
+        <span></span>
+        for the one who still looks up
+        <span></span>
+      </p>
+    </footer>
+  
+</div>

@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block title %}明信片的星空 · The Little Postcard{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h1>明信片的星空</h1>
+  <p class="lead">
+    这些是路过这片星空的人留下的明信片。每一张都带着某个夜晚的照片和心情，
+    也在等一个与它相似的人。
+  </p>
+
+  <form class="wall-search" method="get" action="{{ url_for('posts') }}" role="search">
+    <label class="visually-hidden" for="wall-q">搜索歌曲或歌手</label>
+    <input id="wall-q" type="search" name="q" value="{{ query }}"
+           placeholder="搜索歌曲 / 歌手，例如：雨爱、陈粒" autocomplete="off">
+    <button class="btn btn-primary btn-small" type="submit">搜索</button>
+    {% if query %}
+      <a class="link wall-search__clear" href="{{ url_for('posts') }}">清除</a>
+    {% endif %}
+  </form>
+
+  <p class="hint">
+    {% if query %}
+      搜索「{{ query }}」找到 {{ total }} 张明信片 · 第 {{ page }} / {{ total_pages }} 页
+    {% else %}
+      星空里已有 {{ total }} 张明信片 · 第 {{ page }} / {{ total_pages }} 页
+    {% endif %}
+  </p>
+
+  {% if cards %}
+    <ul class="post-list">
+      {% for card in cards %}
+        {% if card['kind'] == 'post' %}
+          {% set card_href = url_for('postcard', post_id=card['item_id']) %}
+        {% else %}
+          {% set card_href = url_for('note_postcard', image_id=card['item_id']) %}
+        {% endif %}
+        <li class="post-item">
+          <a class="post-thumb-link" href="{{ card_href }}" title="展开这张明信片">
+            <img class="post-thumb"
+                 src="{{ url_for('static', filename=card['image_path']) }}"
+                 alt="明信片配图">
+          </a>
+          <div class="post-body">
+            <div class="post-meta">
+              <span class="nickname">{{ card['author'] }}</span>
+              <span class="time">{{ card['sort_time'] }}</span>
+              {% if dev_mode and card['kind'] == 'post' %}
+                {#- 两步确认不用 window.confirm：浏览器拦弹窗时 confirm 直接返回 false，
+                    表单根本不会提交，表现就是「点了删除没反应」。 -#}
+                <form method="post" class="dev-delete-form"
+                      action="{{ url_for('dev_delete_post', post_id=card['post_id']) }}">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <input type="hidden" name="page" value="{{ page }}">
+                  <button type="submit" class="dev-delete-btn"
+                          data-confirm-delete>删除</button>
+                </form>
+              {% endif %}
+            </div>
+            <p class="post-song">
+              <a class="link" href="{{ url_for('song_detail', song_id=card['song_id']) }}"
+                 title="进入这首歌的空间">
+                《{{ card['song_name'] }}》{% if card['artist'] %} — {{ card['artist'] }}{% endif %}
+              </a>
+            </p>
+            <p class="post-content">{{ card['content'] }}</p>
+            <p class="hint small postcard-open">
+              <a class="link" href="{{ card_href }}">展开这张明信片 →</a>
+            </p>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+
+    {% if total_pages > 1 %}
+      <nav class="pagination">
+        {% if page > 1 %}
+          <a class="link" href="{{ url_for('posts', page=page-1, q=query) if query else url_for('posts', page=page-1) }}">← 上一页</a>
+        {% endif %}
+        <span class="page-info">{{ page }} / {{ total_pages }}</span>
+        {% if page < total_pages %}
+          <a class="link" href="{{ url_for('posts', page=page+1, q=query) if query else url_for('posts', page=page+1) }}">下一页 →</a>
+        {% endif %}
+      </nav>
+    {% endif %}
+  {% else %}
+    {% if query %}
+      <p class="hint">没有找到与「{{ query }}」相关的明信片，换个歌名或歌手试试。</p>
+      <p><a class="link" href="{{ url_for('posts') }}">查看全部明信片 →</a></p>
+    {% else %}
+      <p class="hint">这片星空还很安静。寄出第一张照片，让一张明信片留在这里。</p>
+      <p><a class="link" href="{{ url_for('index') }}">去寄一张明信片 →</a></p>
+    {% endif %}
+  {% endif %}
+
+  {#- 开发者入口：只用于演示管理，与主线故事无关。 -#}
+  <div class="dev-panel">
+    {% if dev_mode %}
+      <span class="dev-badge">开发者模式</span>
+      <form method="post" action="{{ url_for('dev_logout') }}" class="dev-inline-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" class="dev-link">退出开发者模式</button>
+      </form>
+    {% else %}
+      <details class="dev-entry">
+        <summary class="dev-link">开发者</summary>
+        <form method="post" action="{{ url_for('dev_login') }}" class="dev-login-form">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <label class="visually-hidden" for="dev-password">开发者密码</label>
+          <input type="password" id="dev-password" name="password"
+                 placeholder="密码" autocomplete="off" required>
+          <button type="submit" class="btn btn-small btn-primary">进入</button>
+        </form>
+      </details>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/wall.js') }}" defer></script>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} · The Little Postcard{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h1>{{ title }}</h1>
+  <p class="lead">{{ message }}</p>
+  <p class="hint">这封信暂时没有找到它的星空。</p>
+  <p class="actions">
+    <a class="link" href="{{ url_for('index') }}">重新寄一张 →</a>
+  </p>
+</section>
+{% endblock %}

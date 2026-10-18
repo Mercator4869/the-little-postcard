@@ -1,0 +1,18 @@
+# Cloudflare Tunnel 配置模板
+# 1. 先执行：cloudflared tunnel login
+# 2. 创建隧道：cloudflared tunnel create image2music
+#    会得到 UUID，并把凭证写到用户目录下的 .cloudflared\<UUID>.json
+# 3. 绑定域名：cloudflared tunnel route dns image2music music.example.com
+# 4. 把下面两处 REPLACE 改成实际值，保存为 cloudflared.yml
+#    （cloudflared.yml 已被 .gitignore 排除，包含凭证路径，不要提交）
+# 5. 运行：cloudflared tunnel --config cloudflared.yml run image2music
+
+tunnel: REPLACE_TUNNEL_UUID
+# Windows 示例：C:\Users\你的用户名\.cloudflared\REPLACE_TUNNEL_UUID.json
+# Linux 示例：  /home/your-user/.cloudflared/REPLACE_TUNNEL_UUID.json
+credentials-file: REPLACE_ABSOLUTE_PATH_TO_CREDENTIALS_JSON
+
+ingress:
+  - hostname: music.example.com
+    service: http://127.0.0.1:5000
+  - service: http_status:404

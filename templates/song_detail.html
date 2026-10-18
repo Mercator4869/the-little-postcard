@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %}{{ song['song_name'] }} · 星群{% endblock %}
+
+{% block content %}
+<section class="card">
+  <h1 class="song-name">{{ song['song_name'] }}</h1>
+  {% if song['artist'] %}<p class="artist">{{ song['artist'] }}</p>{% endif %}
+
+  <div class="audio-block">
+    {% if audio_available %}
+      <button type="button" class="btn btn-primary play-song" data-play-song>
+        ▶ 播放这首歌
+      </button>
+      <audio id="player" controls preload="none" playsinline webkit-playsinline
+             data-song-id="{{ song['id'] }}"
+             src="{{ url_for('static', filename=audio_relative) }}">
+        当前浏览器不支持音频播放。
+      </audio>
+      <p class="hint small" id="audio-resume-hint" hidden></p>
+    {% else %}
+      <p class="hint">该歌曲暂未配置本地音频。</p>
+    {% endif %}
+  </div>
+
+  <div class="song-leave">
+    <p class="song-leave__title">在这个星群留下一张明信片</p>
+    <p class="song-leave__hint">
+      把照片和一句话直接放进这首歌；它会成为星群里的一张新明信片。照片不超过 {{ max_upload_mib }} MiB。
+    </p>
+    <form method="post" class="song-leave-form"
+          action="{{ url_for('song_postcard', song_id=song['id']) }}"
+          enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="song-leave__row">
+        <label class="song-leave__field">
+          <span>照片</span>
+          <input type="file" name="image" accept="image/jpeg,image/png" required>
+        </label>
+        <label class="song-leave__field song-leave__field--nickname">
+          <span>署名</span>
+          <input type="text" name="nickname" maxlength="30"
+                 placeholder="可留空，默认风外客">
+        </label>
+      </div>
+      <label class="song-leave__field">
+        <span>想留下的话</span>
+        <textarea name="content" rows="3" maxlength="{{ content_max_length }}"
+                  required placeholder="{{ compose_placeholder }}"></textarea>
+      </label>
+      <div class="song-leave__submit">
+        <button type="submit" class="btn btn-primary btn-small">留在星群</button>
+      </div>
+    </form>
+  </div>
+
+  <p class="actions">
+    <a class="link" href="{{ url_for('index') }}">去寄一张明信片 →</a>
+    <a class="link" href="{{ url_for('posts') }}">明信片的星空 →</a>
+  </p>
+</section>
+
+<section class="card">
+  <h2>这首歌下的明信片（{{ card_items|length }}）</h2>
+
+  {% if card_items %}
+    <ul class="post-list note-feed">
+      {% for item in card_items %}
+        <li class="post-item note-post" id="{{ item.anchor }}">
+          <a class="post-thumb-link"
+             href="{{ item.postcard_url }}"
+             title="展开这张明信片">
+            <img class="post-thumb"
+                 src="{{ url_for('static', filename=item.image_local_path) }}"
+                 alt="明信片配图">
+          </a>
+          <div class="post-body">
+            <div class="post-meta">
+              <span class="nickname">{{ item.author }}</span>
+              {% if item.time %}<span class="time">{{ item.time }}</span>{% endif %}
+            </div>
+
+            <p class="post-content">{{ item.content }}</p>
+            <p class="hint small">
+              <a class="link" href="{{ item.postcard_url }}">展开这张明信片 →</a>
+            </p>
+
+            <div class="note-actions">
+              <form method="post" class="like-form" action="{{ item.like_url }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                {% if item.liked %}
+                  <button class="like-btn liked" type="submit"
+                          aria-pressed="true"
+                          title="再点一次取消共鸣">♥ 已共鸣 · {{ item.likes }}</button>
+                {% else %}
+                  <button class="like-btn" type="submit"
+                          aria-pressed="false"
+                          title="点一下，把共鸣留在星群里">♥ 共鸣之心 · {{ item.likes }}</button>
+                {% endif %}
+              </form>
+            </div>
+
+            {% if item.replies %}
+              <div class="note-replies">
+                {% for reply in item.replies %}
+                  <p class="note-reply">
+                    <span class="nickname">{{ reply['nickname'] }}</span>
+                    <span class="time">{{ reply['created_at'] }}</span>
+                    <span class="reply-text">{{ reply['content'] }}</span>
+                  </p>
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            <form method="post" class="reply-form" action="{{ item.reply_url }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <input type="hidden" name="next" value="{{ item.reply_next }}">
+              <textarea name="content" rows="2" maxlength="500"
+                        required placeholder="{{ compose_placeholder }}"></textarea>
+              <button type="submit" class="btn btn-primary btn-small">回信</button>
+            </form>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="hint">这首歌的星群里，还没有明信片。</p>
+  {% endif %}
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/song.js') }}" defer></script>
+{% endblock %}
