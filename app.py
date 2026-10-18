@@ -349,6 +349,30 @@ def _safe_next(target: str | None) -> str | None:
     return None
 
 
+def _remove_card_image_file(relative_path: str | None) -> None:
+    """删除明信片对应的图片文件。
+
+    只接受 static/ 下 uploads/ 与 comment_images/ 两类路径；
+    路径非法或文件不存在时静默跳过，绝不因为清理失败影响删除结果。
+    """
+    if not relative_path:
+        return
+    try:
+        absolute = image_utils.static_relative_to_absolute(relative_path)
+    except Exception:  # noqa: BLE001 - 清理失败不应影响主流程
+        return
+    if absolute is None:
+        logger.warning("跳过图片清理（路径非法）：%s", relative_path)
+        return
+    if not str(relative_path).startswith(("uploads/", "comment_images/")):
+        logger.warning("跳过图片清理（不在允许目录）：%s", relative_path)
+        return
+    try:
+        absolute.unlink(missing_ok=True)
+    except OSError as exc:
+        logger.warning("删除图片文件失败 %s：%s", absolute, exc)
+
+
 def _register_access_gate(app: Flask) -> None:
     @app.before_request
     def require_access():
@@ -1313,29 +1337,49 @@ def _register_routes(app: Flask) -> None:
         flash("已退出开发者模式。", "success")
         return redirect(url_for("posts"))
 
-    @app.route("/dev/post/<int:post_id>/delete", methods=["POST"])
+    @app.route("/dev/card/<kind>/<int:item_id>/delete", methods=["POST"])
     @require_database
-    def dev_delete_post(post_id: int):
+    def dev_delete_card(kind: str, item_id: int):
+        """删除墙上的任意一张明信片（post = 访客寄出，note = 星空原有）。"""
         if not session.get("dev_mode"):
             flash("需要先进入开发者模式。", "error")
             return redirect(url_for("posts"))
 
+        if kind not in db.WALL_CARD_KINDS:
+            abort(404)
+
+        image_relative: str | None = None
         try:
             with db.get_connection() as conn:
-                removed = db.delete_post(conn, post_id)
+                removed, image_relative = db.delete_wall_card(conn, kind, item_id)
         except db.DatabaseUnavailable:
             return render_template("error.html",
                                    title="数据库不可用",
                                    message="数据库暂时无法访问，请稍后重试。"), 503
 
         if removed:
-            logger.info("开发者模式删除留言：post_id=%s", post_id)
-            flash(f"已删除明信片 #{post_id}。", "success")
+            # 数据库记录已删除，再清理磁盘上的图片文件（失败不影响结果）
+            _remove_card_image_file(image_relative)
+            logger.info("开发者模式删除明信片：kind=%s item_id=%s", kind, item_id)
+            if kind == "note":
+                flash(
+                    f"已删除明信片 #{item_id}。这张来自星空原有素材，"
+                    "匹配索引需要重启服务后才会同步。",
+                    "success",
+                )
+            else:
+                flash(f"已删除明信片 #{item_id}。", "success")
         else:
             flash("这张明信片不存在，或已经被收走。", "error")
 
         page = request.form.get("page", type=int) or 1
         return redirect(url_for("posts", page=max(1, page)))
+
+    @app.route("/dev/post/<int:post_id>/delete", methods=["POST"])
+    @require_database
+    def dev_delete_post(post_id: int):
+        """旧入口（仅访客留言），保留以兼容旧链接。"""
+        return dev_delete_card("post", post_id)
 
 
 # ================================================================ 辅助

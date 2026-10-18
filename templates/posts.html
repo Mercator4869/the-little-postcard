@@ -45,11 +45,12 @@
             <div class="post-meta">
               <span class="nickname">{{ card['author'] }}</span>
               <span class="time">{{ card['sort_time'] }}</span>
-              {% if dev_mode and card['kind'] == 'post' %}
-                {#- 两步确认不用 window.confirm：浏览器拦弹窗时 confirm 直接返回 false，
+              {% if dev_mode %}
+                {#- 墙上的每一张都叫「明信片」，两种来源都可以删除。
+                    两步确认不用 window.confirm：浏览器拦弹窗时 confirm 直接返回 false，
                     表单根本不会提交，表现就是「点了删除没反应」。 -#}
                 <form method="post" class="dev-delete-form"
-                      action="{{ url_for('dev_delete_post', post_id=card['post_id']) }}">
+                      action="{{ url_for('dev_delete_card', kind=card['kind'], item_id=card['item_id']) }}">
                   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                   <input type="hidden" name="page" value="{{ page }}">
                   <button type="submit" class="dev-delete-btn"

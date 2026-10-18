@@ -376,7 +376,71 @@ def count_posts(conn: sqlite3.Connection) -> int:
 def delete_post(conn: sqlite3.Connection, post_id: int) -> bool:
     """删除一条留言（开发者模式用）。返回是否真的删掉了一条。"""
     cursor = conn.execute("DELETE FROM posts WHERE id = ?", (post_id,))
+    if cursor.rowcount > 0:
+        # item_texts 没有外键，需要手动清理，避免留下孤儿向量
+        conn.execute(
+            "DELETE FROM item_texts WHERE item_type = 'post' AND item_id = ?",
+            (post_id,),
+        )
     return cursor.rowcount > 0
+
+
+# ---------------------------------------------------------------- 统一「明信片」
+# 留言墙上的每一张卡片都叫「明信片」，内部有两种来源：
+#   kind = "post" —— 访客寄出的明信片（posts 表）
+#   kind = "note" —— 星空原有的明信片（素材笔记 song_comment_images）
+# 两种都允许在开发者模式下删除，这里提供统一的删除入口。
+
+WALL_CARD_KINDS = ("post", "note")
+
+
+def delete_wall_card(
+    conn: sqlite3.Connection, kind: str, item_id: int
+) -> tuple[bool, str | None]:
+    """删除墙上的任意一张明信片。
+
+    返回 (是否删除成功, 该卡片图片的静态相对路径或 None)。
+    调用方负责在提交成功后按需删除图片文件。
+    """
+    if kind not in WALL_CARD_KINDS:
+        return False, None
+
+    image_path: str | None = None
+
+    if kind == "post":
+        row = conn.execute(
+            "SELECT upload_image_path FROM posts WHERE id = ?", (item_id,)
+        ).fetchone()
+        if row is None:
+            return False, None
+        image_path = str(row["upload_image_path"] or "") or None
+        # post_image_embeddings / post_likes / post_replies 均有 ON DELETE CASCADE
+        cursor = conn.execute("DELETE FROM posts WHERE id = ?", (item_id,))
+        deleted = cursor.rowcount > 0
+        if deleted:
+            conn.execute(
+                "DELETE FROM item_texts WHERE item_type = 'post' AND item_id = ?",
+                (item_id,),
+            )
+        return deleted, image_path if deleted else None
+
+    # kind == "note"：删除素材图本身，note / likes / replies 由外键级联清理
+    row = conn.execute(
+        "SELECT image_local_path FROM song_comment_images WHERE id = ?", (item_id,)
+    ).fetchone()
+    if row is None:
+        return False, None
+    image_path = str(row["image_local_path"] or "") or None
+    cursor = conn.execute(
+        "DELETE FROM song_comment_images WHERE id = ?", (item_id,)
+    )
+    deleted = cursor.rowcount > 0
+    if deleted:
+        conn.execute(
+            "DELETE FROM item_texts WHERE item_type = 'comment_image' AND item_id = ?",
+            (item_id,),
+        )
+    return deleted, image_path if deleted else None
 
 
 def get_post(conn: sqlite3.Connection, post_id: int) -> sqlite3.Row | None:

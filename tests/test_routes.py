@@ -5,6 +5,7 @@
 """
 from __future__ import annotations
 
+import hashlib
 import io
 import sys
 from pathlib import Path
@@ -928,3 +929,117 @@ class TestDevDelete:
         """删除后刷新必须看到最新列表，不能被浏览器缓存挡住。"""
         response = client.get("/posts")
         assert "no-store" in response.headers.get("Cache-Control", "")
+
+
+class TestUnifiedWallCards:
+    """墙上两种来源统一叫「明信片」，开发者模式下都可以删除。"""
+
+    def _seed_note(self, *, song_key=None, image_name="note_case.jpg"):
+        """插入一条素材笔记卡片（kind='note'）。返回 comment_image id。"""
+        song_key = song_key or config.FALLBACK_SONG_KEY
+        with db.get_connection() as conn:
+            song = db.get_song_by_key(conn, song_key)
+            relative = f"comment_images/{image_name}"
+            cursor = conn.execute(
+                "INSERT INTO song_comment_images "
+                "(song_id, image_local_path, source_url, image_sha256, "
+                " embedding_json, embedding_model) "
+                "VALUES (?, ?, NULL, ?, ?, ?)",
+                (
+                    int(song["id"]),
+                    relative,
+                    hashlib.sha256(image_name.encode()).hexdigest(),
+                    "[]",
+                    config.CLIP_MODEL_NAME,
+                ),
+            )
+            image_id = int(cursor.lastrowid)
+            conn.execute(
+                "INSERT INTO comment_image_notes "
+                "(comment_image_id, note_text, note_author, note_time_ms, source_link) "
+                "VALUES (?, ?, ?, ?, NULL)",
+                (image_id, "这条素材笔记要被删掉", "测试作者", None),
+            )
+            conn.execute(
+                "INSERT INTO note_replies (comment_image_id, nickname, content) "
+                "VALUES (?, ?, ?)",
+                (image_id, "访客", "回复也应该被级联删掉"),
+            )
+        return image_id
+
+    def test_wall_renders_delete_button_for_note_cards(self, client):
+        self._seed_note()
+        client.post(
+            "/dev/login",
+            data={"password": config.DEV_DELETE_PASSWORD},
+            follow_redirects=True,
+        )
+        body = client.get("/posts").get_data(as_text=True)
+        assert "dev-delete-btn" in body
+        assert "/dev/card/note/" in body
+
+    def test_delete_note_card_removes_material(self, client):
+        image_id = self._seed_note()
+        client.post(
+            "/dev/login",
+            data={"password": config.DEV_DELETE_PASSWORD},
+            follow_redirects=True,
+        )
+        response = client.post(
+            f"/dev/card/note/{image_id}/delete",
+            data={"page": "1"},
+            follow_redirects=True,
+        )
+        assert "已删除明信片" in response.get_data(as_text=True)
+
+        with db.get_connection() as conn:
+            assert conn.execute(
+                "SELECT 1 FROM song_comment_images WHERE id = ?", (image_id,)
+            ).fetchone() is None
+            # 笔记与回复都应被级联清理
+            assert conn.execute(
+                "SELECT 1 FROM comment_image_notes WHERE comment_image_id = ?",
+                (image_id,),
+            ).fetchone() is None
+            assert conn.execute(
+                "SELECT 1 FROM note_replies WHERE comment_image_id = ?", (image_id,)
+            ).fetchone() is None
+
+    def test_delete_note_card_removes_image_file(self, client, tmp_path):
+        """删除后磁盘上的素材图片也应被清理。"""
+        image_id = self._seed_note(image_name="cleanup_case.jpg")
+        target = config.COMMENT_IMAGE_DIR / "cleanup_case.jpg"
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(b"\xff\xd8\xff\xd9")
+        assert target.exists()
+
+        client.post(
+            "/dev/login",
+            data={"password": config.DEV_DELETE_PASSWORD},
+            follow_redirects=True,
+        )
+        client.post(
+            f"/dev/card/note/{image_id}/delete", data={"page": "1"},
+            follow_redirects=True,
+        )
+        assert not target.exists()
+
+    def test_unknown_kind_returns_404(self, client):
+        client.post(
+            "/dev/login",
+            data={"password": config.DEV_DELETE_PASSWORD},
+            follow_redirects=True,
+        )
+        response = client.post("/dev/card/weird/1/delete")
+        assert response.status_code == 404
+
+    def test_missing_card_reports_friendly_error(self, client):
+        client.post(
+            "/dev/login",
+            data={"password": config.DEV_DELETE_PASSWORD},
+            follow_redirects=True,
+        )
+        response = client.post(
+            "/dev/card/note/999999/delete", follow_redirects=True
+        )
+        assert "不存在" in response.get_data(as_text=True)
