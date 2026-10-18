@@ -207,9 +207,10 @@ the-little-postcard/
 ├── static/css · static/js   本地样式与脚本
 ├── scripts/                模型下载、素材去重等工具
 ├── deploy/                 systemd + Caddy + 隧道配置模板
+├── README.md               项目说明（同时提供 README.pdf）
 ├── docs/
-│   ├── materials.md        素材与权限说明（模型/音频/图片怎么放）
-│   ├── third-party.md      技术实现与第三方资源说明（许可证 / 版权边界）
+│   ├── materials.md        素材与权限说明（同时提供 materials.pdf）
+│   ├── third-party.md      技术实现与第三方资源说明（同时提供 third-party.pdf）
 │   ├── roadshow/           路演 PPT、PDF、演讲稿与预览图
 │   └── screenshots/        README 用截图
 ├── data/                   CSV 清单模板（数据库/模型/原图均本地生成）
@@ -220,13 +221,16 @@ the-little-postcard/
 
 ## 📚 文档与演示材料
 
-| 材料 | 位置 | 说明 |
-|---|---|---|
-| **项目说明** | [README.md](README.md) | 你正在看的这份：背景、功能、部署指南 |
-| **技术 / 第三方资源说明** | [docs/third-party.md](docs/third-party.md) | 技术栈、模型与依赖许可证、素材版权边界、明确未使用的技术 |
-| **素材与运行准备** | [docs/materials.md](docs/materials.md) | 模型缓存、音频、图片怎么本地放好 |
-| **路演 PPT** | [docs/roadshow/](docs/roadshow/) | pptx 可编辑版 + PDF 兜底版 + 5 分钟逐字稿 + 7 页预览图 |
-| **在线仓库** | https://github.com/Mercator4869/the-little-postcard | GitHub 地址，含 `v1.0` 标签 |
+> 每份文档都提供 **Markdown**（便于在线浏览与检索）与 **PDF**（便于直接阅读、打印、离线分发）两种格式。
+
+| 材料 | Markdown | PDF | 说明 |
+|---|---|---|---|
+| **项目说明** | [README.md](README.md) | [README.pdf](README.pdf) | 你正在看的这份：背景、功能、部署指南 |
+| **技术 / 第三方资源说明** | [third-party.md](docs/third-party.md) | [third-party.pdf](docs/third-party.pdf) | 技术栈、模型与依赖许可证、素材版权边界、明确未使用的技术 |
+| **素材与运行准备** | [materials.md](docs/materials.md) | [materials.pdf](docs/materials.pdf) | 模型缓存、音频、图片怎么本地放好 |
+| **路演演讲稿** | [路演讲稿_5分钟.md](docs/roadshow/路演讲稿_5分钟.md) | [路演讲稿_5分钟.pdf](docs/roadshow/路演讲稿_5分钟.pdf) | 5 分钟逐字稿与时间分配 |
+| **路演 PPT** | [docs/roadshow/](docs/roadshow/) | [Roadshow PDF](docs/roadshow/The_Little_Postcard_Roadshow.pdf) | pptx 可编辑版 + PDF 兜底版 + 7 页预览图 |
+| **在线仓库** | — | — | https://github.com/Mercator4869/the-little-postcard （含 `v1.0` 标签） |
 
 <p align="center">
   <img src="docs/roadshow/preview/contact-sheet.png" width="80%" alt="路演 PPT 七页总览">
